@@ -61,6 +61,7 @@ namespace Ticketing_System
 
                 var createHistory = new SqliteCommand(historyTable, db);
                 createHistory.ExecuteNonQuery();
+                db.Close();
             }
         }
 
@@ -86,8 +87,8 @@ namespace Ticketing_System
 
                 // Insertar ticket con ese UserId
                 string insertQuery = @"
-        INSERT INTO Tickets (Title, Description, Status, CreatedAt, Priority, CreatedByUserId)
-        VALUES (@title, @description, @status, @createdAt, @priority, @userId);";
+        INSERT INTO Tickets (Title, Description, Status, CreatedAt, Priority, CreatedByUserId, AssignedToUserId)
+        VALUES (@title, @description, @status, @createdAt, @priority, @userId, @agentId);";
 
                 using var insertCmd = new SqliteCommand(insertQuery, db);
 
@@ -97,8 +98,12 @@ namespace Ticketing_System
                 insertCmd.Parameters.AddWithValue("@createdAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 insertCmd.Parameters.AddWithValue("@priority", priority);
                 insertCmd.Parameters.AddWithValue("@userId", userId);
+                insertCmd.Parameters.AddWithValue("@agentId", 1);
 
-                insertCmd.ExecuteNonQuery();
+                Console.WriteLine("ANTES DE INSERT");
+insertCmd.ExecuteNonQuery();
+Console.WriteLine("DESPUÉS DE INSERT");
+                db.Close();
             }
         }
 
@@ -108,7 +113,7 @@ namespace Ticketing_System
             {
                 db.Open();
 
-                string query = "SELECT Id, Title, Description FROM Tickets";
+                string query = "SELECT  T.Id AS TicketId, T.Title As Title, T.Status As Status, CASE T.Priority WHEN 1 THEN \"Crítico\" WHEN 2 THEN \"Alta\" WHEN 3 THEN \"Media\" WHEN 4 THEN \"Baja\" END As Priority, U.Name AS UserName, U.Email AS UserEmail FROM Tickets T LEFT JOIN Users U on T.CreatedByUserId = U.Id";
 
                 using var command = new SqliteCommand(query, db);
                 using var reader = command.ExecuteReader();
@@ -117,6 +122,53 @@ namespace Ticketing_System
                 table.Load(reader);
 
                 return table;
+                
+            }
+        }
+
+        public static void LoadTicket(int ticketId, Label title, Label user, Label email, Label agent, ComboBox state, ComboBox priority, TextBox description)
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+            SELECT  
+                T.Id AS TicketId, 
+                T.Title AS Title, 
+                T.Status AS Status, 
+                T.Description AS Description, 
+                CASE T.Priority 
+                    WHEN 1 THEN 'Crítico' 
+                    WHEN 2 THEN 'Alta' 
+                    WHEN 3 THEN 'Media' 
+                    WHEN 4 THEN 'Baja' 
+                END AS Priority, 
+                U.Name AS UserName, 
+                U.Email AS UserEmail, 
+                A.Name AS Agent
+            FROM Tickets T 
+            LEFT JOIN Users U 
+                ON T.CreatedByUserId = U.Id
+            LEFT JOIN Users A 
+                ON T.AssignedToUserId = A.Id
+            WHERE T.Id = @id";
+
+                using var cmd = new SqliteCommand(query, db);
+                cmd.Parameters.AddWithValue("@id", ticketId);
+
+                using var reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    title.Text = reader["Title"].ToString();
+                    user.Text = reader["UserName"].ToString();
+                    email.Text = reader["UserEmail"].ToString();
+                    agent.Text = reader["Agent"].ToString();
+                    state.Text = reader["Status"].ToString();
+                    priority.Text = reader["Priority"].ToString();
+                    description.Text = reader["Description"].ToString();
+                }
             }
         }
     }

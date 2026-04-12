@@ -29,29 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            AllTicketsView = new DataGridView();
             addTcktBtn = new Button();
             srchTcktBtn = new Button();
             textBox1 = new TextBox();
             refreshBtn = new Button();
-            listView1 = new ListView();
-            ((System.ComponentModel.ISupportInitialize)AllTicketsView).BeginInit();
+            AllTicketView = new ListView();
             SuspendLayout();
-            // 
-            // AllTicketsView
-            // 
-            AllTicketsView.AllowUserToAddRows = false;
-            AllTicketsView.AllowUserToDeleteRows = false;
-            AllTicketsView.BackgroundColor = SystemColors.Control;
-            AllTicketsView.BorderStyle = BorderStyle.None;
-            AllTicketsView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            AllTicketsView.GridColor = Color.Black;
-            AllTicketsView.Location = new Point(13, 94);
-            AllTicketsView.Name = "AllTicketsView";
-            AllTicketsView.ReadOnly = true;
-            AllTicketsView.RowHeadersWidth = 51;
-            AllTicketsView.Size = new Size(406, 442);
-            AllTicketsView.TabIndex = 0;
             // 
             // addTcktBtn
             // 
@@ -96,44 +79,45 @@
             refreshBtn.UseVisualStyleBackColor = false;
             refreshBtn.Click += refreshBtn_Click;
             // 
-            // listView1
+            // AllTicketView
             // 
-            listView1.FullRowSelect = true;
-            listView1.Location = new Point(503, 110);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(436, 426);
-            listView1.TabIndex = 6;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            AllTicketView.BackColor = SystemColors.Control;
+            AllTicketView.BorderStyle = BorderStyle.None;
+            AllTicketView.FullRowSelect = true;
+            AllTicketView.GridLines = true;
+            AllTicketView.Location = new Point(13, 82);
+            AllTicketView.Name = "AllTicketView";
+            AllTicketView.Size = new Size(938, 426);
+            AllTicketView.TabIndex = 6;
+            AllTicketView.UseCompatibleStateImageBehavior = false;
+            AllTicketView.View = View.Details;
+            AllTicketView.SelectedIndexChanged += AllTicketView_SelectedIndexChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(963, 572);
-            Controls.Add(listView1);
+            Controls.Add(AllTicketView);
             Controls.Add(refreshBtn);
             Controls.Add(textBox1);
             Controls.Add(srchTcktBtn);
             Controls.Add(addTcktBtn);
-            Controls.Add(AllTicketsView);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ticket System";
-            ((System.ComponentModel.ISupportInitialize)AllTicketsView).EndInit();
+            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private DataGridView AllTicketsView;
         private Button addTcktBtn;
         private Button srchTcktBtn;
         private TextBox textBox1;
         private Button refreshBtn;
-        private ListView listView1;
+        private ListView AllTicketView;
     }
 }
