@@ -43,6 +43,10 @@
             ticketNumLabel = new Label();
             titleLbl = new Label();
             notesBox = new TextBox();
+            usertimeTxt = new TextBox();
+            textBox2 = new TextBox();
+            textBox3 = new TextBox();
+            textBox4 = new TextBox();
             sideLayoutPanel.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -53,20 +57,19 @@
             sideLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2.5F));
             sideLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 96F));
             sideLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.5F));
-            sideLayoutPanel.Controls.Add(userLbl, 1, 1);
-            sideLayoutPanel.Controls.Add(agentLbl, 1, 6);
-            sideLayoutPanel.Controls.Add(stateLbl, 1, 9);
-            sideLayoutPanel.Controls.Add(prioLbl, 1, 12);
-            sideLayoutPanel.Controls.Add(emailTxt, 1, 4);
-            sideLayoutPanel.Controls.Add(agentTxt, 1, 7);
-            sideLayoutPanel.Controls.Add(stateBox, 1, 10);
-            sideLayoutPanel.Controls.Add(prioBox, 1, 13);
-            sideLayoutPanel.Controls.Add(userTxt, 1, 2);
+            sideLayoutPanel.Controls.Add(userLbl, 1, 0);
+            sideLayoutPanel.Controls.Add(agentLbl, 1, 5);
+            sideLayoutPanel.Controls.Add(stateLbl, 1, 8);
+            sideLayoutPanel.Controls.Add(prioLbl, 1, 11);
+            sideLayoutPanel.Controls.Add(emailTxt, 1, 3);
+            sideLayoutPanel.Controls.Add(agentTxt, 1, 6);
+            sideLayoutPanel.Controls.Add(stateBox, 1, 9);
+            sideLayoutPanel.Controls.Add(prioBox, 1, 12);
+            sideLayoutPanel.Controls.Add(userTxt, 1, 1);
             sideLayoutPanel.Dock = DockStyle.Left;
             sideLayoutPanel.Location = new Point(0, 0);
             sideLayoutPanel.Name = "sideLayoutPanel";
             sideLayoutPanel.RowCount = 15;
-            sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 6.25F));
             sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 3.125F));
             sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 1F));
@@ -81,6 +84,7 @@
             sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 6.25F));
             sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 6.25F));
             sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            sideLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             sideLayoutPanel.Size = new Size(232, 720);
             sideLayoutPanel.TabIndex = 1;
             // 
@@ -89,7 +93,7 @@
             userLbl.AutoSize = true;
             userLbl.Dock = DockStyle.Fill;
             userLbl.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            userLbl.Location = new Point(8, 216);
+            userLbl.Location = new Point(8, 0);
             userLbl.Name = "userLbl";
             userLbl.Size = new Size(216, 45);
             userLbl.TabIndex = 1;
@@ -102,7 +106,7 @@
             agentLbl.AutoSize = true;
             agentLbl.Dock = DockStyle.Fill;
             agentLbl.Font = new Font("Tahoma", 11F);
-            agentLbl.Location = new Point(8, 340);
+            agentLbl.Location = new Point(8, 124);
             agentLbl.Name = "agentLbl";
             agentLbl.Size = new Size(216, 45);
             agentLbl.TabIndex = 2;
@@ -114,7 +118,7 @@
             stateLbl.AutoSize = true;
             stateLbl.Dock = DockStyle.Fill;
             stateLbl.Font = new Font("Tahoma", 11F);
-            stateLbl.Location = new Point(8, 466);
+            stateLbl.Location = new Point(8, 250);
             stateLbl.Name = "stateLbl";
             stateLbl.Size = new Size(216, 45);
             stateLbl.TabIndex = 3;
@@ -126,7 +130,7 @@
             prioLbl.AutoSize = true;
             prioLbl.Dock = DockStyle.Fill;
             prioLbl.Font = new Font("Tahoma", 11F);
-            prioLbl.Location = new Point(8, 592);
+            prioLbl.Location = new Point(8, 376);
             prioLbl.Name = "prioLbl";
             prioLbl.Size = new Size(216, 45);
             prioLbl.TabIndex = 4;
@@ -138,7 +142,7 @@
             emailTxt.AutoSize = true;
             emailTxt.Dock = DockStyle.Fill;
             emailTxt.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            emailTxt.Location = new Point(8, 290);
+            emailTxt.Location = new Point(8, 74);
             emailTxt.Name = "emailTxt";
             emailTxt.Size = new Size(216, 22);
             emailTxt.TabIndex = 5;
@@ -151,7 +155,7 @@
             agentTxt.AutoSize = true;
             agentTxt.Dock = DockStyle.Fill;
             agentTxt.Font = new Font("Tahoma", 11F);
-            agentTxt.Location = new Point(8, 385);
+            agentTxt.Location = new Point(8, 169);
             agentTxt.Name = "agentTxt";
             agentTxt.Size = new Size(216, 45);
             agentTxt.TabIndex = 6;
@@ -162,7 +166,7 @@
             // 
             stateBox.Dock = DockStyle.Fill;
             stateBox.FormattingEnabled = true;
-            stateBox.Location = new Point(8, 514);
+            stateBox.Location = new Point(8, 298);
             stateBox.Name = "stateBox";
             stateBox.Size = new Size(216, 28);
             stateBox.TabIndex = 7;
@@ -171,7 +175,7 @@
             // 
             prioBox.Dock = DockStyle.Fill;
             prioBox.FormattingEnabled = true;
-            prioBox.Location = new Point(8, 640);
+            prioBox.Location = new Point(8, 424);
             prioBox.Name = "prioBox";
             prioBox.Size = new Size(216, 28);
             prioBox.TabIndex = 8;
@@ -181,7 +185,7 @@
             userTxt.AutoSize = true;
             userTxt.Dock = DockStyle.Fill;
             userTxt.Font = new Font("Tahoma", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            userTxt.Location = new Point(8, 261);
+            userTxt.Location = new Point(8, 45);
             userTxt.Name = "userTxt";
             userTxt.Size = new Size(216, 22);
             userTxt.TabIndex = 9;
@@ -190,26 +194,21 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.Anchor = AnchorStyles.None;
             tableLayoutPanel1.ColumnCount = 3;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2.5F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 95F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 2.5F));
             tableLayoutPanel1.Controls.Add(ticketNumLabel, 1, 1);
             tableLayoutPanel1.Controls.Add(titleLbl, 1, 3);
-            tableLayoutPanel1.Controls.Add(notesBox, 1, 6);
-            tableLayoutPanel1.Dock = DockStyle.Right;
             tableLayoutPanel1.Location = new Point(232, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 8;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowCount = 4;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 12.5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 47.5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.Size = new Size(1028, 720);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
+            tableLayoutPanel1.Size = new Size(1028, 216);
             tableLayoutPanel1.TabIndex = 2;
             // 
             // ticketNumLabel
@@ -217,9 +216,9 @@
             ticketNumLabel.AutoSize = true;
             ticketNumLabel.Dock = DockStyle.Fill;
             ticketNumLabel.Font = new Font("Tahoma", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ticketNumLabel.Location = new Point(28, 36);
+            ticketNumLabel.Location = new Point(28, 21);
             ticketNumLabel.Name = "ticketNumLabel";
-            ticketNumLabel.Size = new Size(970, 72);
+            ticketNumLabel.Size = new Size(970, 86);
             ticketNumLabel.TabIndex = 0;
             ticketNumLabel.TextAlign = ContentAlignment.MiddleCenter;
             ticketNumLabel.Click += label1_Click_1;
@@ -229,29 +228,87 @@
             titleLbl.AutoSize = true;
             titleLbl.Dock = DockStyle.Fill;
             titleLbl.Font = new Font("Tahoma", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            titleLbl.Location = new Point(28, 144);
+            titleLbl.Location = new Point(28, 128);
             titleLbl.Name = "titleLbl";
-            titleLbl.Size = new Size(970, 72);
+            titleLbl.Size = new Size(970, 88);
             titleLbl.TabIndex = 1;
             titleLbl.Text = "#";
             titleLbl.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // notesBox
             // 
-            notesBox.Dock = DockStyle.Fill;
-            notesBox.Location = new Point(28, 345);
+            notesBox.Anchor = AnchorStyles.None;
+            notesBox.BackColor = SystemColors.Control;
+            notesBox.BorderStyle = BorderStyle.None;
+            notesBox.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            notesBox.Location = new Point(256, 232);
             notesBox.Multiline = true;
             notesBox.Name = "notesBox";
-            notesBox.Size = new Size(970, 336);
+            notesBox.Size = new Size(976, 144);
             notesBox.TabIndex = 2;
+            notesBox.Text = "TICKET HISTORY";
+            // 
+            // usertimeTxt
+            // 
+            usertimeTxt.Anchor = AnchorStyles.None;
+            usertimeTxt.BackColor = SystemColors.Control;
+            usertimeTxt.BorderStyle = BorderStyle.None;
+            usertimeTxt.Location = new Point(1016, 352);
+            usertimeTxt.Name = "usertimeTxt";
+            usertimeTxt.Size = new Size(216, 20);
+            usertimeTxt.TabIndex = 3;
+            usertimeTxt.Text = "#";
+            // 
+            // textBox2
+            // 
+            textBox2.Anchor = AnchorStyles.None;
+            textBox2.BackColor = SystemColors.Control;
+            textBox2.BorderStyle = BorderStyle.None;
+            textBox2.Location = new Point(1008, 512);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(216, 20);
+            textBox2.TabIndex = 5;
+            textBox2.Text = "#";
+            // 
+            // textBox3
+            // 
+            textBox3.Anchor = AnchorStyles.None;
+            textBox3.BackColor = SystemColors.Control;
+            textBox3.BorderStyle = BorderStyle.None;
+            textBox3.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox3.Location = new Point(248, 392);
+            textBox3.Multiline = true;
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(976, 144);
+            textBox3.TabIndex = 4;
+            textBox3.Text = "# - Probablemente la elimine y si hay notas extras se agregan en backend";
+            // 
+            // textBox4
+            // 
+            textBox4.BackColor = SystemColors.Control;
+            textBox4.BorderStyle = BorderStyle.None;
+            textBox4.Cursor = Cursors.Hand;
+            textBox4.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox4.Location = new Point(240, 552);
+            textBox4.Multiline = true;
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(976, 56);
+            textBox4.TabIndex = 6;
+            textBox4.Text = "Agregar Nota";
+            textBox4.TextAlign = HorizontalAlignment.Center;
             // 
             // TicketDetailForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1260, 720);
+            Controls.Add(textBox4);
+            Controls.Add(textBox2);
+            Controls.Add(textBox3);
+            Controls.Add(usertimeTxt);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(sideLayoutPanel);
+            Controls.Add(notesBox);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "TicketDetailForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -262,6 +319,7 @@
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -277,7 +335,11 @@
         private ComboBox stateBox;
         private ComboBox prioBox;
         private Label titleLbl;
-        private TextBox notesBox;
         private Label userTxt;
+        private TextBox notesBox;
+        private TextBox usertimeTxt;
+        private TextBox textBox2;
+        private TextBox textBox3;
+        private TextBox textBox4;
     }
 }

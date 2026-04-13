@@ -18,7 +18,7 @@ namespace Ticketing_System
             InitializeComponent();
             ticketID = id;
             ticketNumLabel.Text = "Ticket #" + ticketID;
-            DataAccess.LoadTicket(id, titleLbl, userTxt, emailTxt, agentTxt, stateBox, prioBox, notesBox);
+            DataAccess.LoadTicket(id, titleLbl, userTxt, emailTxt, agentTxt, stateBox, prioBox, notesBox, usertimeTxt);
 
         }
 

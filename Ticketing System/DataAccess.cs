@@ -56,7 +56,9 @@ namespace Ticketing_System
                 TicketId INTEGER NOT NULL,
                 Change TEXT NOT NULL,
                 CreatedAt TEXT NOT NULL,
+                UpdatedById INTEGER NOT NULL,
                 FOREIGN KEY (TicketId) REFERENCES Tickets(Id)
+                FOREIGN KEY (UpdatedById) REFERENCES Users(Id)
             );";
 
                 var createHistory = new SqliteCommand(historyTable, db);
@@ -126,7 +128,7 @@ Console.WriteLine("DESPUÉS DE INSERT");
             }
         }
 
-        public static void LoadTicket(int ticketId, Label title, Label user, Label email, Label agent, ComboBox state, ComboBox priority, TextBox description)
+        public static void LoadTicket(int ticketId, Label title, Label user, Label email, Label agent, ComboBox state, ComboBox priority, TextBox description, TextBox usertime)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
             {
@@ -143,7 +145,8 @@ Console.WriteLine("DESPUÉS DE INSERT");
                     WHEN 2 THEN 'Alta' 
                     WHEN 3 THEN 'Media' 
                     WHEN 4 THEN 'Baja' 
-                END AS Priority, 
+                END AS Priority,
+                strftime ('%e/%m/%Y %H:%M', T.CreatedAt) AS CreatedDate,
                 U.Name AS UserName, 
                 U.Email AS UserEmail, 
                 A.Name AS Agent
@@ -168,6 +171,7 @@ Console.WriteLine("DESPUÉS DE INSERT");
                     state.Text = reader["Status"].ToString();
                     priority.Text = reader["Priority"].ToString();
                     description.Text = reader["Description"].ToString();
+                    usertime.Text = reader["Username"].ToString().Split(' ')[0] + " | " + reader["CreatedDate"].ToString(); //esto lo podria separar en dos textboxes
                 }
             }
         }
