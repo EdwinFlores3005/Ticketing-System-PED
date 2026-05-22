@@ -1,0 +1,94 @@
+﻿namespace Ticketing_System.User_Control
+{
+    partial class TicketViewControl
+    {
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            allticketsView = new ListView();
+            tickettypelabel = new Label();
+            amntticketsLbl = new Label();
+            SuspendLayout();
+            // 
+            // allticketsView
+            // 
+            allticketsView.BackColor = Color.White;
+            allticketsView.BorderStyle = BorderStyle.None;
+            allticketsView.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            allticketsView.FullRowSelect = true;
+            allticketsView.Location = new Point(0, 96);
+            allticketsView.MultiSelect = false;
+            allticketsView.Name = "allticketsView";
+            allticketsView.Size = new Size(1528, 744);
+            allticketsView.TabIndex = 0;
+            allticketsView.UseCompatibleStateImageBehavior = false;
+            allticketsView.View = View.Details;
+            // 
+            // tickettypelabel
+            // 
+            tickettypelabel.AutoSize = true;
+            tickettypelabel.BackColor = Color.White;
+            tickettypelabel.FlatStyle = FlatStyle.Flat;
+            tickettypelabel.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tickettypelabel.Location = new Point(0, 8);
+            tickettypelabel.Name = "tickettypelabel";
+            tickettypelabel.Size = new Size(21, 24);
+            tickettypelabel.TabIndex = 1;
+            tickettypelabel.Text = "#";
+            // 
+            // amntticketsLbl
+            // 
+            amntticketsLbl.AutoSize = true;
+            amntticketsLbl.BackColor = Color.White;
+            amntticketsLbl.FlatStyle = FlatStyle.Flat;
+            amntticketsLbl.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            amntticketsLbl.Location = new Point(0, 56);
+            amntticketsLbl.Name = "amntticketsLbl";
+            amntticketsLbl.Size = new Size(18, 19);
+            amntticketsLbl.TabIndex = 2;
+            amntticketsLbl.Text = "#";
+            // 
+            // TicketViewControl
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(amntticketsLbl);
+            Controls.Add(tickettypelabel);
+            Controls.Add(allticketsView);
+            Name = "TicketViewControl";
+            Size = new Size(1528, 840);
+            Load += TicketViewControl_Load;
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private ListView allticketsView;
+        private Label tickettypelabel;
+        private Label amntticketsLbl;
+    }
+}

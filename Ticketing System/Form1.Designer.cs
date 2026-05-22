@@ -1,6 +1,6 @@
 ﻿namespace Ticketing_System
 {
-    partial class Form1
+    partial class MainMenu
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,56 +28,107 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             addTcktBtn = new Button();
             srchTcktBtn = new Button();
-            textBox1 = new TextBox();
+            searchBox = new TextBox();
             refreshBtn = new Button();
             AllTicketView = new ListView();
+            menuPanel = new Panel();
+            menuButtonsPanel = new TableLayoutPanel();
+            homeBtn = new Button();
+            openticketsBtn = new Button();
+            closedicketsBtn = new Button();
+            allticketsBtn = new Button();
+            toolbarPanel = new Panel();
+            tableLayoutPanel1 = new TableLayoutPanel();
+            logoutBtn = new Button();
+            panelSearch = new Panel();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            cerrToolStripMenuItem = new ToolStripMenuItem();
+            maincontainerPanel = new Panel();
+            menuPanel.SuspendLayout();
+            menuButtonsPanel.SuspendLayout();
+            toolbarPanel.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
+            panelSearch.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // addTcktBtn
             // 
-            addTcktBtn.BackColor = SystemColors.Control;
-            addTcktBtn.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            addTcktBtn.Location = new Point(13, 32);
+            addTcktBtn.BackColor = Color.White;
+            addTcktBtn.Cursor = Cursors.Hand;
+            addTcktBtn.Dock = DockStyle.Fill;
+            addTcktBtn.FlatAppearance.BorderColor = Color.Gainsboro;
+            addTcktBtn.FlatAppearance.BorderSize = 0;
+            addTcktBtn.FlatAppearance.MouseOverBackColor = Color.DarkSlateGray;
+            addTcktBtn.FlatStyle = FlatStyle.Flat;
+            addTcktBtn.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addTcktBtn.ForeColor = Color.FromArgb(40, 40, 40);
+            addTcktBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            addTcktBtn.Location = new Point(32, 6);
             addTcktBtn.Name = "addTcktBtn";
-            addTcktBtn.Size = new Size(156, 28);
+            addTcktBtn.Padding = new Padding(5);
+            addTcktBtn.Size = new Size(195, 52);
             addTcktBtn.TabIndex = 1;
-            addTcktBtn.Text = "Agregar Ticket";
+            addTcktBtn.Text = "+ Nuevo";
+            addTcktBtn.TextAlign = ContentAlignment.MiddleLeft;
             addTcktBtn.UseVisualStyleBackColor = false;
             addTcktBtn.Click += addTcktBtn_Click;
+            addTcktBtn.MouseEnter += addTcktBtn_MouseEnter;
+            addTcktBtn.MouseLeave += addTcktBtn_MouseLeave;
             // 
             // srchTcktBtn
             // 
+            srchTcktBtn.BackColor = Color.White;
+            srchTcktBtn.Cursor = Cursors.Hand;
+            srchTcktBtn.FlatAppearance.BorderSize = 0;
+            srchTcktBtn.FlatAppearance.MouseDownBackColor = Color.White;
+            srchTcktBtn.FlatAppearance.MouseOverBackColor = Color.White;
+            srchTcktBtn.FlatStyle = FlatStyle.Flat;
             srchTcktBtn.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            srchTcktBtn.Image = (Image)resources.GetObject("srchTcktBtn.Image");
-            srchTcktBtn.Location = new Point(450, 32);
+            srchTcktBtn.Image = Properties.Resources.search;
+            srchTcktBtn.Location = new Point(8, 8);
             srchTcktBtn.Name = "srchTcktBtn";
-            srchTcktBtn.Size = new Size(41, 28);
+            srchTcktBtn.Size = new Size(32, 24);
             srchTcktBtn.TabIndex = 2;
-            srchTcktBtn.UseVisualStyleBackColor = true;
+            srchTcktBtn.UseVisualStyleBackColor = false;
             // 
-            // textBox1
+            // searchBox
             // 
-            textBox1.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(220, 32);
-            textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Buscar";
-            textBox1.Size = new Size(224, 28);
-            textBox1.TabIndex = 4;
+            searchBox.Anchor = AnchorStyles.None;
+            searchBox.BackColor = Color.White;
+            searchBox.BorderStyle = BorderStyle.None;
+            searchBox.Cursor = Cursors.IBeam;
+            searchBox.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            searchBox.ForeColor = Color.FromArgb(40, 40, 40);
+            searchBox.Location = new Point(40, 8);
+            searchBox.Name = "searchBox";
+            searchBox.Size = new Size(312, 20);
+            searchBox.TabIndex = 4;
+            searchBox.Click += searchBox_Click;
+            searchBox.Enter += searchBox_Enter;
+            searchBox.Leave += searchBox_Leave;
             // 
             // refreshBtn
             // 
-            refreshBtn.BackColor = SystemColors.Control;
+            refreshBtn.BackColor = Color.White;
+            refreshBtn.Cursor = Cursors.Hand;
+            refreshBtn.FlatAppearance.BorderSize = 0;
+            refreshBtn.FlatAppearance.MouseDownBackColor = Color.White;
+            refreshBtn.FlatAppearance.MouseOverBackColor = Color.White;
+            refreshBtn.FlatStyle = FlatStyle.Flat;
             refreshBtn.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            refreshBtn.Image = (Image)resources.GetObject("refreshBtn.Image");
-            refreshBtn.Location = new Point(173, 32);
+            refreshBtn.Image = Properties.Resources.restart20;
+            refreshBtn.Location = new Point(877, 6);
             refreshBtn.Name = "refreshBtn";
-            refreshBtn.Size = new Size(41, 28);
+            refreshBtn.Size = new Size(61, 52);
             refreshBtn.TabIndex = 5;
             refreshBtn.UseVisualStyleBackColor = false;
             refreshBtn.Click += refreshBtn_Click;
+            refreshBtn.MouseLeave += refreshBtn_MouseLeave;
             // 
             // AllTicketView
             // 
@@ -85,39 +136,253 @@
             AllTicketView.BorderStyle = BorderStyle.None;
             AllTicketView.FullRowSelect = true;
             AllTicketView.GridLines = true;
-            AllTicketView.Location = new Point(13, 82);
+            AllTicketView.Location = new Point(0, 776);
             AllTicketView.Name = "AllTicketView";
-            AllTicketView.Size = new Size(938, 426);
+            AllTicketView.Size = new Size(120, 186);
             AllTicketView.TabIndex = 6;
             AllTicketView.UseCompatibleStateImageBehavior = false;
             AllTicketView.View = View.Details;
             AllTicketView.SelectedIndexChanged += AllTicketView_SelectedIndexChanged;
             // 
-            // Form1
+            // menuPanel
+            // 
+            menuPanel.BackColor = Color.DarkSlateGray;
+            menuPanel.Controls.Add(menuButtonsPanel);
+            menuPanel.Dock = DockStyle.Left;
+            menuPanel.Location = new Point(0, 0);
+            menuPanel.Name = "menuPanel";
+            menuPanel.Size = new Size(72, 953);
+            menuPanel.TabIndex = 7;
+            // 
+            // menuButtonsPanel
+            // 
+            menuButtonsPanel.BackColor = Color.Transparent;
+            menuButtonsPanel.ColumnCount = 1;
+            menuButtonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            menuButtonsPanel.Controls.Add(homeBtn, 0, 1);
+            menuButtonsPanel.Controls.Add(openticketsBtn, 0, 2);
+            menuButtonsPanel.Controls.Add(closedicketsBtn, 0, 3);
+            menuButtonsPanel.Controls.Add(allticketsBtn, 0, 4);
+            menuButtonsPanel.Location = new Point(0, 0);
+            menuButtonsPanel.Name = "menuButtonsPanel";
+            menuButtonsPanel.RowCount = 7;
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            menuButtonsPanel.Size = new Size(72, 552);
+            menuButtonsPanel.TabIndex = 8;
+            // 
+            // homeBtn
+            // 
+            homeBtn.Cursor = Cursors.Hand;
+            homeBtn.Dock = DockStyle.Fill;
+            homeBtn.FlatAppearance.BorderSize = 0;
+            homeBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            homeBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            homeBtn.FlatStyle = FlatStyle.Flat;
+            homeBtn.Image = Properties.Resources.home;
+            homeBtn.Location = new Point(0, 78);
+            homeBtn.Margin = new Padding(0);
+            homeBtn.Name = "homeBtn";
+            homeBtn.Size = new Size(72, 78);
+            homeBtn.TabIndex = 8;
+            homeBtn.UseVisualStyleBackColor = true;
+            // 
+            // openticketsBtn
+            // 
+            openticketsBtn.Cursor = Cursors.Hand;
+            openticketsBtn.Dock = DockStyle.Fill;
+            openticketsBtn.FlatAppearance.BorderSize = 0;
+            openticketsBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            openticketsBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            openticketsBtn.FlatStyle = FlatStyle.Flat;
+            openticketsBtn.Image = Properties.Resources.box;
+            openticketsBtn.Location = new Point(0, 156);
+            openticketsBtn.Margin = new Padding(0);
+            openticketsBtn.Name = "openticketsBtn";
+            openticketsBtn.Size = new Size(72, 78);
+            openticketsBtn.TabIndex = 9;
+            openticketsBtn.UseVisualStyleBackColor = true;
+            // 
+            // closedicketsBtn
+            // 
+            closedicketsBtn.Cursor = Cursors.Hand;
+            closedicketsBtn.Dock = DockStyle.Fill;
+            closedicketsBtn.FlatAppearance.BorderSize = 0;
+            closedicketsBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            closedicketsBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            closedicketsBtn.FlatStyle = FlatStyle.Flat;
+            closedicketsBtn.Image = Properties.Resources.folder;
+            closedicketsBtn.Location = new Point(0, 234);
+            closedicketsBtn.Margin = new Padding(0);
+            closedicketsBtn.Name = "closedicketsBtn";
+            closedicketsBtn.Size = new Size(72, 78);
+            closedicketsBtn.TabIndex = 10;
+            closedicketsBtn.UseVisualStyleBackColor = true;
+            closedicketsBtn.Click += closedicketsBtn_Click;
+            // 
+            // allticketsBtn
+            // 
+            allticketsBtn.Cursor = Cursors.Hand;
+            allticketsBtn.Dock = DockStyle.Fill;
+            allticketsBtn.FlatAppearance.BorderSize = 0;
+            allticketsBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            allticketsBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            allticketsBtn.FlatStyle = FlatStyle.Flat;
+            allticketsBtn.Image = Properties.Resources.openfolder;
+            allticketsBtn.Location = new Point(0, 312);
+            allticketsBtn.Margin = new Padding(0);
+            allticketsBtn.Name = "allticketsBtn";
+            allticketsBtn.Size = new Size(72, 78);
+            allticketsBtn.TabIndex = 11;
+            allticketsBtn.UseVisualStyleBackColor = true;
+            allticketsBtn.Click += allticketsBtn_Click;
+            // 
+            // toolbarPanel
+            // 
+            toolbarPanel.BackColor = Color.White;
+            toolbarPanel.Controls.Add(tableLayoutPanel1);
+            toolbarPanel.Dock = DockStyle.Top;
+            toolbarPanel.Location = new Point(72, 0);
+            toolbarPanel.Name = "toolbarPanel";
+            toolbarPanel.Size = new Size(1580, 64);
+            toolbarPanel.TabIndex = 8;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = Color.Transparent;
+            tableLayoutPanel1.ColumnCount = 10;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.70502961F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.7877235F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.7877235F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.8704185F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.26257467F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.26257467F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.26257467F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21.31287F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 13.043478F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.70502961F));
+            tableLayoutPanel1.Controls.Add(logoutBtn, 8, 0);
+            tableLayoutPanel1.Controls.Add(addTcktBtn, 1, 0);
+            tableLayoutPanel1.Controls.Add(panelSearch, 3, 0);
+            tableLayoutPanel1.Controls.Add(refreshBtn, 5, 0);
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.Padding = new Padding(3);
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel1.Size = new Size(1584, 64);
+            tableLayoutPanel1.TabIndex = 10;
+            // 
+            // logoutBtn
+            // 
+            logoutBtn.BackColor = Color.White;
+            logoutBtn.Cursor = Cursors.Hand;
+            logoutBtn.Dock = DockStyle.Fill;
+            logoutBtn.FlatAppearance.BorderColor = Color.Gainsboro;
+            logoutBtn.FlatAppearance.BorderSize = 0;
+            logoutBtn.FlatAppearance.MouseOverBackColor = Color.DarkSlateGray;
+            logoutBtn.FlatStyle = FlatStyle.Flat;
+            logoutBtn.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            logoutBtn.ForeColor = Color.FromArgb(40, 40, 40);
+            logoutBtn.ImageAlign = ContentAlignment.MiddleLeft;
+            logoutBtn.Location = new Point(1347, 6);
+            logoutBtn.Name = "logoutBtn";
+            logoutBtn.Padding = new Padding(5);
+            logoutBtn.Size = new Size(199, 52);
+            logoutBtn.TabIndex = 10;
+            logoutBtn.Text = "Nombre";
+            logoutBtn.TextAlign = ContentAlignment.MiddleLeft;
+            logoutBtn.UseVisualStyleBackColor = false;
+            logoutBtn.Click += button2_Click;
+            logoutBtn.MouseEnter += logoutBtn_MouseEnter;
+            logoutBtn.MouseLeave += logoutBtn_MouseLeave;
+            // 
+            // panelSearch
+            // 
+            panelSearch.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            panelSearch.Controls.Add(searchBox);
+            panelSearch.Controls.Add(srchTcktBtn);
+            panelSearch.Location = new Point(431, 14);
+            panelSearch.Margin = new Padding(0);
+            panelSearch.Name = "panelSearch";
+            panelSearch.Size = new Size(376, 36);
+            panelSearch.TabIndex = 9;
+            panelSearch.Paint += panelSearch_Paint;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.BackColor = Color.White;
+            contextMenuStrip1.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { cerrToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.RenderMode = ToolStripRenderMode.Professional;
+            contextMenuStrip1.Size = new Size(188, 32);
+            // 
+            // cerrToolStripMenuItem
+            // 
+            cerrToolStripMenuItem.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            cerrToolStripMenuItem.Name = "cerrToolStripMenuItem";
+            cerrToolStripMenuItem.Padding = new Padding(5, 5, 5, 1);
+            cerrToolStripMenuItem.Size = new Size(197, 28);
+            cerrToolStripMenuItem.Text = "Cerrar Sesión";
+            // 
+            // maincontainerPanel
+            // 
+            maincontainerPanel.Location = new Point(104, 88);
+            maincontainerPanel.Name = "maincontainerPanel";
+            maincontainerPanel.Size = new Size(1528, 840);
+            maincontainerPanel.TabIndex = 9;
+            // 
+            // MainMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(963, 572);
+            BackColor = Color.White;
+            ClientSize = new Size(1652, 953);
+            Controls.Add(maincontainerPanel);
+            Controls.Add(toolbarPanel);
+            Controls.Add(menuPanel);
             Controls.Add(AllTicketView);
-            Controls.Add(refreshBtn);
-            Controls.Add(textBox1);
-            Controls.Add(srchTcktBtn);
-            Controls.Add(addTcktBtn);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            Name = "Form1";
+            Name = "MainMenu";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ticket System";
             Load += Form1_Load;
+            menuPanel.ResumeLayout(false);
+            menuButtonsPanel.ResumeLayout(false);
+            toolbarPanel.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
+            panelSearch.ResumeLayout(false);
+            panelSearch.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
         private Button addTcktBtn;
         private Button srchTcktBtn;
-        private TextBox textBox1;
+        private TextBox searchBox;
         private Button refreshBtn;
         private ListView AllTicketView;
+        private Panel menuPanel;
+        private TableLayoutPanel menuButtonsPanel;
+        private Button homeBtn;
+        private Button openticketsBtn;
+        private Button closedicketsBtn;
+        private Button allticketsBtn;
+        private Panel toolbarPanel;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panelSearch;
+        private Button logoutBtn;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem cerrToolStripMenuItem;
+        private Panel maincontainerPanel;
     }
 }

@@ -1,16 +1,74 @@
+using MaterialSkin;
 using System.Data;
+using System.Drawing.Drawing2D;
+using System.Threading.Tasks;
+using Ticketing_System.User_Control;
 
 namespace Ticketing_System
 {
-    public partial class Form1 : Form
+    public partial class MainMenu : Form
     {
-        public Form1()
+        Color currentBorderColor = Color.Gray;
+        public MainMenu()
         {
             InitializeComponent();
+
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
+
+
             DataAccess.InitializeDatabase();
 
-            
+
         }
+
+        //Round Corners
+        private void RoundButton(Button btn, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+
+            path.StartFigure();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(btn.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(btn.Width - radius, btn.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, btn.Height - radius, radius, radius, 90, 90);
+            path.CloseFigure();
+
+            btn.Region = new Region(path);
+        }
+
+        /*private void RoundPanel(Panel panel, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+
+            path.StartFigure();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(panel.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(panel.Width - radius, panel.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, panel.Height - radius, radius, radius, 90, 90);
+            path.CloseFigure();
+
+            panel.Region = new Region(path);
+        }*/
+
+        //Active Button
+        private void ActivateButton(Button btn)
+        {
+            Button currentButton;
+            currentButton = btn;
+            if (currentButton != null)
+            {
+                currentButton.BackColor = Color.White;
+                currentButton.ForeColor = Color.Black;
+            }
+
+            btn.BackColor = Color.FromArgb(230, 245, 243);
+            btn.ForeColor = Color.Teal;
+        }
+
+        //Panel Search Paint
+
 
         private void LoadTickets()
         {
@@ -25,7 +83,7 @@ namespace Ticketing_System
                 item.SubItems.Add(row["Title"].ToString());
                 item.SubItems.Add(row["Status"].ToString());
                 item.SubItems.Add(row["Priority"].ToString());
-//              item.SubItems.Add(row["Description"].ToString())
+                //              item.SubItems.Add(row["Description"].ToString())
                 item.SubItems.Add(row["UserName"].ToString());
                 item.SubItems.Add(row["UserEmail"].ToString());
 
@@ -49,12 +107,14 @@ namespace Ticketing_System
             }
             if (NewTicket.DialogResult == DialogResult.Cancel)
                 NewTicket.Close();
+
+            //ActivateButton(addTcktBtn);
         }
 
+        //Este se puede quedar asi, tiene que cambiar a allticketsview dentro del usercontrol
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-           LoadTickets();
-
+            LoadTickets();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -67,6 +127,8 @@ namespace Ticketing_System
             AllTicketView.Columns.Add("Nombre", 80);
             AllTicketView.Columns.Add("Correo", 150);
             //En vez de correo sera fecha
+            RoundButton(addTcktBtn, 30);
+            RoundButton(logoutBtn, 30);
         }
 
         private void AllTicketView_SelectedIndexChanged(object sender, EventArgs e)
@@ -80,8 +142,81 @@ namespace Ticketing_System
 
                 Form TicketDetail = new TicketDetailForm(ticketId);
                 TicketDetail.Show();
-                
+
             }
+        }
+
+        private void addTcktBtn_MouseEnter(object sender, EventArgs e)
+        {
+            addTcktBtn.ForeColor = Color.White;
+        }
+
+        private void addTcktBtn_MouseLeave(object sender, EventArgs e)
+        {
+            addTcktBtn.ForeColor = Color.FromArgb(40, 40, 40);
+        }
+
+        private void searchBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void searchBox_Enter(object sender, EventArgs e)
+        {
+            panelSearch.Invalidate();
+            currentBorderColor = Color.DarkSlateGray;
+        }
+
+        private void searchBox_Leave(object sender, EventArgs e)
+        {
+            currentBorderColor = Color.Gray;
+            panelSearch.Invalidate();
+        }
+
+        private void panelSearch_Paint(object sender, PaintEventArgs e)
+        {
+
+            ControlPaint.DrawBorder(
+               e.Graphics,
+               panelSearch.ClientRectangle,
+               currentBorderColor,
+               ButtonBorderStyle.Solid);
+
+
+        }
+
+        private void refreshBtn_MouseLeave(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.Default;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            contextMenuStrip1.Show(logoutBtn, 0, logoutBtn.Height);
+        }
+
+        private void logoutBtn_MouseEnter(object sender, EventArgs e)
+        {
+            logoutBtn.ForeColor = Color.White;
+        }
+
+        private void logoutBtn_MouseLeave(object sender, EventArgs e)
+        {
+            logoutBtn.ForeColor = Color.FromArgb(40, 40, 40);
+        }
+
+        private void allticketsBtn_Click(object sender, EventArgs e)
+        {
+            TicketViewControl getAllTickets = new TicketViewControl("Todos los tickets", 6);
+            maincontainerPanel.Controls.Clear();
+            getAllTickets.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(getAllTickets);
+
+        }
+
+        private void closedicketsBtn_Click(object sender, EventArgs e)
+        {
+            maincontainerPanel.Controls.Clear();
         }
     }
 }

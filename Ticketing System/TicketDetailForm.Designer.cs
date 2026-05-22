@@ -246,7 +246,7 @@
             notesBox.Name = "notesBox";
             notesBox.Size = new Size(976, 144);
             notesBox.TabIndex = 2;
-            notesBox.Text = "TICKET HISTORY";
+            notesBox.Text = "T";
             // 
             // usertimeTxt
             // 
@@ -281,7 +281,7 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(976, 144);
             textBox3.TabIndex = 4;
-            textBox3.Text = "# - Probablemente la elimine y si hay notas extras se agregan en backend";
+            textBox3.Text = "Notas extra";
             // 
             // textBox4
             // 
