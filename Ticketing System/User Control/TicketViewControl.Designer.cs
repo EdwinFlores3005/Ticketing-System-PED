@@ -30,7 +30,7 @@
         {
             allticketsView = new ListView();
             tickettypelabel = new Label();
-            amntticketsLbl = new Label();
+            allTicketsNumber = new Label();
             SuspendLayout();
             // 
             // allticketsView
@@ -59,23 +59,23 @@
             tickettypelabel.TabIndex = 1;
             tickettypelabel.Text = "#";
             // 
-            // amntticketsLbl
+            // allTicketsNumber
             // 
-            amntticketsLbl.AutoSize = true;
-            amntticketsLbl.BackColor = Color.White;
-            amntticketsLbl.FlatStyle = FlatStyle.Flat;
-            amntticketsLbl.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            amntticketsLbl.Location = new Point(0, 56);
-            amntticketsLbl.Name = "amntticketsLbl";
-            amntticketsLbl.Size = new Size(18, 19);
-            amntticketsLbl.TabIndex = 2;
-            amntticketsLbl.Text = "#";
+            allTicketsNumber.AutoSize = true;
+            allTicketsNumber.BackColor = Color.White;
+            allTicketsNumber.FlatStyle = FlatStyle.Flat;
+            allTicketsNumber.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            allTicketsNumber.Location = new Point(0, 56);
+            allTicketsNumber.Name = "allTicketsNumber";
+            allTicketsNumber.Size = new Size(18, 19);
+            allTicketsNumber.TabIndex = 2;
+            allTicketsNumber.Text = "#";
             // 
             // TicketViewControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(amntticketsLbl);
+            Controls.Add(allTicketsNumber);
             Controls.Add(tickettypelabel);
             Controls.Add(allticketsView);
             Name = "TicketViewControl";
@@ -89,6 +89,6 @@
 
         private ListView allticketsView;
         private Label tickettypelabel;
-        private Label amntticketsLbl;
+        private Label allTicketsNumber;
     }
 }

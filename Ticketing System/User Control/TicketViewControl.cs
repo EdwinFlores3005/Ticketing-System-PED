@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Ticketing_System.Data;
 
 namespace Ticketing_System.User_Control
 {
@@ -22,7 +23,7 @@ namespace Ticketing_System.User_Control
             allticketsView.SmallImageList = img;
 
             tickettypelabel.Text = ticketType;
-            amntticketsLbl.Text = ticketAmount.ToString() + " tickets";
+            allTicketsNumber.Text = ticketAmount.ToString() + " tickets";
         }
 
         private void LoadTickets()

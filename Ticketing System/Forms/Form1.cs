@@ -2,6 +2,8 @@ using MaterialSkin;
 using System.Data;
 using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
+using Ticketing_System.Data;
+using Ticketing_System.Forms;
 using Ticketing_System.User_Control;
 
 namespace Ticketing_System
@@ -12,13 +14,8 @@ namespace Ticketing_System
         public MainMenu()
         {
             InitializeComponent();
-
-            var materialSkinManager = MaterialSkinManager.Instance;
-            materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
-
-
             DataAccess.InitializeDatabase();
+            logoutBtn.Text = Session.name;
 
 
         }
@@ -207,7 +204,7 @@ namespace Ticketing_System
 
         private void allticketsBtn_Click(object sender, EventArgs e)
         {
-            TicketViewControl getAllTickets = new TicketViewControl("Todos los tickets", 6);
+            TicketViewControl getAllTickets = new TicketViewControl("Todos los tickets", DataAccess.CountAllTickets());
             maincontainerPanel.Controls.Clear();
             getAllTickets.Dock = DockStyle.Fill;
             maincontainerPanel.Controls.Add(getAllTickets);
@@ -217,6 +214,15 @@ namespace Ticketing_System
         private void closedicketsBtn_Click(object sender, EventArgs e)
         {
             maincontainerPanel.Controls.Clear();
+        }
+
+        private void cerrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Session.id = 0;
+            Session.name = "";
+            Session.email = "";
+            Session.role = "";
+            Application.Restart();
         }
     }
 }

@@ -1,3 +1,5 @@
+using Ticketing_System.Forms;
+
 namespace Ticketing_System
 {
     internal static class Program
@@ -11,7 +13,14 @@ namespace Ticketing_System
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new MainMenu());
+            using(LoginForm login = new LoginForm())
+            {
+                if(login.ShowDialog() == DialogResult.OK)
+                {
+                    Application.Run(new MainMenu());
+                }
+            }
+            
         }
     }
 }

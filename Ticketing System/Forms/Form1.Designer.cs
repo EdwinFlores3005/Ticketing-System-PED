@@ -280,9 +280,9 @@
             // 
             // logoutBtn
             // 
+            logoutBtn.Anchor = AnchorStyles.None;
             logoutBtn.BackColor = Color.White;
             logoutBtn.Cursor = Cursors.Hand;
-            logoutBtn.Dock = DockStyle.Fill;
             logoutBtn.FlatAppearance.BorderColor = Color.Gainsboro;
             logoutBtn.FlatAppearance.BorderSize = 0;
             logoutBtn.FlatAppearance.MouseOverBackColor = Color.DarkSlateGray;
@@ -295,8 +295,6 @@
             logoutBtn.Padding = new Padding(5);
             logoutBtn.Size = new Size(199, 52);
             logoutBtn.TabIndex = 10;
-            logoutBtn.Text = "Nombre";
-            logoutBtn.TextAlign = ContentAlignment.MiddleLeft;
             logoutBtn.UseVisualStyleBackColor = false;
             logoutBtn.Click += button2_Click;
             logoutBtn.MouseEnter += logoutBtn_MouseEnter;
@@ -322,15 +320,16 @@
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { cerrToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.RenderMode = ToolStripRenderMode.Professional;
-            contextMenuStrip1.Size = new Size(188, 32);
+            contextMenuStrip1.Size = new Size(211, 60);
             // 
             // cerrToolStripMenuItem
             // 
             cerrToolStripMenuItem.DisplayStyle = ToolStripItemDisplayStyle.Text;
             cerrToolStripMenuItem.Name = "cerrToolStripMenuItem";
             cerrToolStripMenuItem.Padding = new Padding(5, 5, 5, 1);
-            cerrToolStripMenuItem.Size = new Size(197, 28);
+            cerrToolStripMenuItem.Size = new Size(220, 28);
             cerrToolStripMenuItem.Text = "Cerrar Sesión";
+            cerrToolStripMenuItem.Click += cerrToolStripMenuItem_Click;
             // 
             // maincontainerPanel
             // 

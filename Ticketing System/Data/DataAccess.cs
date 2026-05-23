@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ticketing_System
+namespace Ticketing_System.Data
 {
     public static class DataAccess
     {
@@ -102,9 +102,9 @@ namespace Ticketing_System
                 insertCmd.Parameters.AddWithValue("@userId", userId);
                 insertCmd.Parameters.AddWithValue("@agentId", 1);
 
-                Console.WriteLine("ANTES DE INSERT");
-insertCmd.ExecuteNonQuery();
-Console.WriteLine("DESPUÉS DE INSERT");
+
+                insertCmd.ExecuteNonQuery();
+
                 db.Close();
             }
         }
@@ -125,6 +125,57 @@ Console.WriteLine("DESPUÉS DE INSERT");
 
                 return table;
                 
+            }
+        }
+
+        /*public static int Login(TextBox username, TextBox password)
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = "SELECT COUNT(*) FROM Users WHERE Email = @user AND Password = @pass";
+
+                using var command = new SqliteCommand(query, db);
+                command.Parameters.AddWithValue("@user", username.Text);
+                command.Parameters.AddWithValue("@pass", password.Text);
+
+                int result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+
+            }
+        }*/
+
+
+
+        public static bool  Login(string username, string password)
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = "SELECT Id, Name, Email, Role FROM Users WHERE Email = @user AND Password = @pass";
+
+                using var command = new SqliteCommand(query, db);
+                command.Parameters.AddWithValue("@user", username);
+                command.Parameters.AddWithValue("@pass", password);
+
+                using var reader = command.ExecuteReader();
+
+                if(reader.Read())
+                {
+                    Session.id = Convert.ToInt32(reader["Id"]);
+                    Session.name = reader["Name"].ToString();
+                    Session.email = reader["Email"].ToString();
+                    Session.role = reader["Role"].ToString();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+
             }
         }
 
@@ -173,6 +224,22 @@ Console.WriteLine("DESPUÉS DE INSERT");
                     description.Text = reader["Description"].ToString();
                     usertime.Text = reader["Username"].ToString().Split(' ')[0] + " | " + reader["CreatedDate"].ToString(); //esto lo podria separar en dos textboxes
                 }
+            }
+        }
+
+        public static int CountAllTickets()
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = "SELECT COUNT(*) FROM Tickets";
+
+                using var command = new SqliteCommand(query, db);
+
+                int result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+
             }
         }
     }
