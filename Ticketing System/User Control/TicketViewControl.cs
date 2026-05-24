@@ -1,95 +1,134 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Ticketing_System.Data;
+using Ticketing_System.Models;
 
 namespace Ticketing_System.User_Control
 {
     public partial class TicketViewControl : UserControl
     {
-        public TicketViewControl(string ticketType, int ticketAmount)
+        private string currentTicketType;
+
+        public TicketViewControl(string ticketType)
         {
             InitializeComponent();
-            LoadTickets();
+
+            currentTicketType = ticketType;
+
             ImageList img = new ImageList();
             img.ImageSize = new Size(1, 32);
 
             allticketsView.SmallImageList = img;
 
-            tickettypelabel.Text = ticketType;
-            allTicketsNumber.Text = ticketAmount.ToString() + " tickets";
+            SetupColumns();
+
+            LoadTickets();
+        }
+
+        private void SetupColumns()
+        {
+            allticketsView.Columns.Clear();
+            allticketsView.Columns.Add("ID", 88);
+            allticketsView.Columns.Add("Título", 400);
+            allticketsView.Columns.Add("Estado", 120);
+            allticketsView.Columns.Add("Fecha", 140);
+            allticketsView.Columns.Add("Prioridad", 120);
+            allticketsView.Columns.Add("Creado Por", 170);
+            allticketsView.Columns.Add("Correo", 295);
+            allticketsView.Columns.Add("Asignado A", 195);
         }
 
         private void LoadTickets()
         {
             allticketsView.Items.Clear();
 
-            DataTable table = DataAccess.GetTickets();
-            
+            List<Ticket> tickets = new List<Ticket>();
 
-            foreach (DataRow row in table.Rows)
+            if (currentTicketType == "all")
             {
-                var item = new ListViewItem(row["TicketId"].ToString());
-                //item.Font = new Font(allticketsView.Font, FontStyle.Regular);
+                tickettypelabel.Text = "Todos los tickets";
+                tickets = DataAccess.GetTickets("");
+            }
+            else if (currentTicketType == "mine")
+            {
+                tickettypelabel.Text = "Mis tickets";
+                tickets = DataAccess.GetTickets("WHERE T.AssignedToUserId = @userId");
+            }
+            else if (currentTicketType == "closed")
+            {
+                tickettypelabel.Text = "Tickets cerrados";
+                tickets = DataAccess.GetTickets("WHERE T.Status = 'Closed'");
+            }
+
+            allTicketsNumber.Text = tickets.Count + " tickets";
+
+            foreach (Ticket ticket in tickets)
+            {
+                ListViewItem item = new ListViewItem(ticket.Id.ToString());
+
                 item.UseItemStyleForSubItems = false;
-
-                item.SubItems.Add(row["Title"].ToString());
-                item.SubItems.Add(row["Status"].ToString());
-                item.SubItems.Add(row["Priority"].ToString());
-                //              item.SubItems.Add(row["Description"].ToString())
-                item.SubItems.Add(row["UserName"].ToString());
-                item.SubItems.Add(row["UserEmail"].ToString());
-
+                item.SubItems.Add(ticket.Title);
+                item.SubItems.Add(ticket.Status);
+                item.SubItems.Add(ticket.CreatedAt.ToString("dd/MM/yyyy"));
+                item.SubItems.Add(GetPriorityText(ticket.Priority));
+                item.SubItems.Add(ticket.UserName);
+                item.SubItems.Add(ticket.UserEmail);
+                item.SubItems.Add(ticket.AssignedAgentName);
                 for (int i = 0; i < item.SubItems.Count; i++)
                 {
                     item.SubItems[i].Font = new Font(
                         allticketsView.Font,
-                        i == 2 ? FontStyle.Bold : FontStyle.Regular
+                        i == 2
+                            ? FontStyle.Bold
+                            : FontStyle.Regular
                     );
                 }
 
-
-                string status = row["Status"].ToString().ToLower();
+                string status = ticket.Status.ToLower();
 
                 if (status == "new")
                 {
-                    item.SubItems[2].ForeColor = Color.FromArgb(255, 170, 64);
+                    item.SubItems[2].ForeColor =
+                        Color.FromArgb(255, 170, 64);
                 }
                 else if (status == "open")
                 {
-                    item.SubItems[2].ForeColor = Color.FromArgb(220, 53, 69);
+                    item.SubItems[2].ForeColor =
+                        Color.FromArgb(220, 53, 69);
                 }
                 else if (status == "pending")
                 {
-                    item.SubItems[2].ForeColor = Color.FromArgb(0, 120, 215);
+                    item.SubItems[2].ForeColor =
+                        Color.FromArgb(0, 120, 215);
+                }
+                else if (status == "closed")
+                {
+                    item.SubItems[2].ForeColor =
+                        Color.FromArgb(40, 167, 69);
                 }
 
                 allticketsView.Items.Add(item);
-
             }
         }
 
-        private void TicketViewControl_Load(object sender, EventArgs e)
+        private string GetPriorityText(int priority)
         {
-            
-            allticketsView.Columns.Add("ID", 75);
-            allticketsView.Columns.Add("Título", 450);
-            allticketsView.Columns.Add("Estado", 100);
-            allticketsView.Columns.Add("Prioridad", 100);
-            allticketsView.Columns.Add("Nombre", 150);
-            allticketsView.Columns.Add("Correo", 300);
-            //allticketsView.Columns.Add("Agente", 100);
-            
+            switch (priority)
+            {
+                case 1:
+                    return "Crítico";
+                case 2:
+                    return "Alta";
+                case 3:
+                    return "Media";
+                case 4:
+                    return "Baja";
+                default:
+                    return "Sin prioridad";
+            }
         }
-
-
     }
 }
-
 

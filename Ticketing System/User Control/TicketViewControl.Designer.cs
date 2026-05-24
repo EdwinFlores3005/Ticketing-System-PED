@@ -31,6 +31,8 @@
             allticketsView = new ListView();
             tickettypelabel = new Label();
             allTicketsNumber = new Label();
+            sortbyLbl = new Label();
+            sortbyBox = new ComboBox();
             SuspendLayout();
             // 
             // allticketsView
@@ -71,16 +73,45 @@
             allTicketsNumber.TabIndex = 2;
             allTicketsNumber.Text = "#";
             // 
+            // sortbyLbl
+            // 
+            sortbyLbl.Anchor = AnchorStyles.None;
+            sortbyLbl.AutoSize = true;
+            sortbyLbl.BackColor = Color.White;
+            sortbyLbl.FlatStyle = FlatStyle.Flat;
+            sortbyLbl.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            sortbyLbl.Location = new Point(1256, 48);
+            sortbyLbl.Name = "sortbyLbl";
+            sortbyLbl.Padding = new Padding(4);
+            sortbyLbl.Size = new Size(120, 27);
+            sortbyLbl.TabIndex = 3;
+            sortbyLbl.Text = "Ordenar por:";
+            // 
+            // sortbyBox
+            // 
+            sortbyBox.Anchor = AnchorStyles.None;
+            sortbyBox.BackColor = SystemColors.Window;
+            sortbyBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            sortbyBox.FlatStyle = FlatStyle.Flat;
+            sortbyBox.Font = new Font("Arial", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            sortbyBox.FormattingEnabled = true;
+            sortbyBox.Items.AddRange(new object[] { "Default", "Prioridad", "Fecha", "Estado" });
+            sortbyBox.Location = new Point(1376, 48);
+            sortbyBox.Name = "sortbyBox";
+            sortbyBox.Size = new Size(151, 27);
+            sortbyBox.TabIndex = 4;
+            // 
             // TicketViewControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(sortbyBox);
+            Controls.Add(sortbyLbl);
             Controls.Add(allTicketsNumber);
             Controls.Add(tickettypelabel);
             Controls.Add(allticketsView);
             Name = "TicketViewControl";
             Size = new Size(1528, 840);
-            Load += TicketViewControl_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -90,5 +121,7 @@
         private ListView allticketsView;
         private Label tickettypelabel;
         private Label allTicketsNumber;
+        private Label sortbyLbl;
+        private ComboBox sortbyBox;
     }
 }

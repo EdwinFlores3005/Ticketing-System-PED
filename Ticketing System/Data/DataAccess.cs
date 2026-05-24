@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Ticketing_System.Models;
 
 namespace Ticketing_System.Data
 {
@@ -109,23 +110,83 @@ namespace Ticketing_System.Data
             }
         }
 
-        public static DataTable GetTickets()
+      
+
+        //Retornar todos los tickets
+        public static List<Ticket> GetTickets(string where)
         {
+            List<Ticket> list = new List<Ticket>();
+
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
             {
                 db.Open();
 
-                string query = "SELECT  T.Id AS TicketId, T.Title As Title, T.Status As Status, CASE T.Priority WHEN 1 THEN \"Crítico\" WHEN 2 THEN \"Alta\" WHEN 3 THEN \"Media\" WHEN 4 THEN \"Baja\" END As Priority, U.Name AS UserName, U.Email AS UserEmail FROM Tickets T LEFT JOIN Users U on T.CreatedByUserId = U.Id";
+                string query = @"
+               SELECT  
+            T.Id AS TicketId,
+            T.Title,
+            T.Description,
+            T.Status,
+            T.Priority,
+            T.CreatedAt,
+            T.CreatedByUserId,
+            T.AssignedToUserId,
+            U.Name AS UserName,
+            U.Email AS UserEmail,
+            A.Name AS AssignedAgentName
+            FROM Tickets T
+            LEFT JOIN Users U
+            ON T.CreatedByUserId = U.Id
+            LEFT JOIN Users A
+            ON T.AssignedToUserId = A.Id
+            " + where;
 
                 using var command = new SqliteCommand(query, db);
+                if (where.Contains("@userId"))
+                {
+                    command.Parameters.AddWithValue(
+                        "@userId",
+                        Session.id
+                    );
+                }
+
                 using var reader = command.ExecuteReader();
 
-                DataTable table = new DataTable();
-                table.Load(reader);
+                while (reader.Read())
+                {
+                    Ticket ticket = new Ticket();
 
-                return table;
-                
+                    ticket.Id = Convert.ToInt32(reader["TicketId"]);
+
+                    ticket.Title = reader["Title"].ToString();
+
+                    ticket.Description = reader["Description"].ToString();
+
+                    ticket.Status = reader["Status"].ToString();
+
+                    ticket.Priority = Convert.ToInt32(reader["Priority"]);
+
+                    ticket.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+
+                    ticket.CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]);
+
+                    if (reader["AssignedToUserId"] != DBNull.Value)
+                    {
+                        ticket.AssignedToUserId =
+                            Convert.ToInt32(reader["AssignedToUserId"]);
+                    }
+
+                    ticket.UserName = reader["UserName"].ToString();
+
+                    ticket.UserEmail = reader["UserEmail"].ToString();
+
+                    ticket.AssignedAgentName = reader["AssignedAgentName"].ToString();
+
+                    list.Add(ticket);
+                }
             }
+
+            return list;
         }
 
         /*public static int Login(TextBox username, TextBox password)
@@ -227,21 +288,7 @@ namespace Ticketing_System.Data
             }
         }
 
-        public static int CountAllTickets()
-        {
-            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
-            {
-                db.Open();
-
-                string query = "SELECT COUNT(*) FROM Tickets";
-
-                using var command = new SqliteCommand(query, db);
-
-                int result = Convert.ToInt32(command.ExecuteScalar());
-                return result;
-
-            }
-        }
+        
     }
 
 }

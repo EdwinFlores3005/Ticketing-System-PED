@@ -34,9 +34,10 @@
             srchTcktBtn = new Button();
             searchBox = new TextBox();
             refreshBtn = new Button();
-            AllTicketView = new ListView();
             menuPanel = new Panel();
             menuButtonsPanel = new TableLayoutPanel();
+            createUsersBtn = new Button();
+            assignTicketsBtn = new Button();
             homeBtn = new Button();
             openticketsBtn = new Button();
             closedicketsBtn = new Button();
@@ -130,20 +131,6 @@
             refreshBtn.Click += refreshBtn_Click;
             refreshBtn.MouseLeave += refreshBtn_MouseLeave;
             // 
-            // AllTicketView
-            // 
-            AllTicketView.BackColor = SystemColors.Control;
-            AllTicketView.BorderStyle = BorderStyle.None;
-            AllTicketView.FullRowSelect = true;
-            AllTicketView.GridLines = true;
-            AllTicketView.Location = new Point(0, 776);
-            AllTicketView.Name = "AllTicketView";
-            AllTicketView.Size = new Size(120, 186);
-            AllTicketView.TabIndex = 6;
-            AllTicketView.UseCompatibleStateImageBehavior = false;
-            AllTicketView.View = View.Details;
-            AllTicketView.SelectedIndexChanged += AllTicketView_SelectedIndexChanged;
-            // 
             // menuPanel
             // 
             menuPanel.BackColor = Color.DarkSlateGray;
@@ -159,6 +146,8 @@
             menuButtonsPanel.BackColor = Color.Transparent;
             menuButtonsPanel.ColumnCount = 1;
             menuButtonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            menuButtonsPanel.Controls.Add(createUsersBtn, 0, 6);
+            menuButtonsPanel.Controls.Add(assignTicketsBtn, 0, 5);
             menuButtonsPanel.Controls.Add(homeBtn, 0, 1);
             menuButtonsPanel.Controls.Add(openticketsBtn, 0, 2);
             menuButtonsPanel.Controls.Add(closedicketsBtn, 0, 3);
@@ -175,6 +164,36 @@
             menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
             menuButtonsPanel.Size = new Size(72, 552);
             menuButtonsPanel.TabIndex = 8;
+            // 
+            // createUsersBtn
+            // 
+            createUsersBtn.Cursor = Cursors.Hand;
+            createUsersBtn.FlatAppearance.BorderSize = 0;
+            createUsersBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            createUsersBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            createUsersBtn.FlatStyle = FlatStyle.Flat;
+            createUsersBtn.Image = Properties.Resources.createUsers;
+            createUsersBtn.Location = new Point(0, 468);
+            createUsersBtn.Margin = new Padding(0);
+            createUsersBtn.Name = "createUsersBtn";
+            createUsersBtn.Size = new Size(72, 78);
+            createUsersBtn.TabIndex = 12;
+            createUsersBtn.UseVisualStyleBackColor = true;
+            // 
+            // assignTicketsBtn
+            // 
+            assignTicketsBtn.Cursor = Cursors.Hand;
+            assignTicketsBtn.FlatAppearance.BorderSize = 0;
+            assignTicketsBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            assignTicketsBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            assignTicketsBtn.FlatStyle = FlatStyle.Flat;
+            assignTicketsBtn.Image = Properties.Resources.assign;
+            assignTicketsBtn.Location = new Point(0, 390);
+            assignTicketsBtn.Margin = new Padding(0);
+            assignTicketsBtn.Name = "assignTicketsBtn";
+            assignTicketsBtn.Size = new Size(72, 78);
+            assignTicketsBtn.TabIndex = 11;
+            assignTicketsBtn.UseVisualStyleBackColor = true;
             // 
             // homeBtn
             // 
@@ -207,6 +226,7 @@
             openticketsBtn.Size = new Size(72, 78);
             openticketsBtn.TabIndex = 9;
             openticketsBtn.UseVisualStyleBackColor = true;
+            openticketsBtn.Click += openticketsBtn_Click;
             // 
             // closedicketsBtn
             // 
@@ -241,6 +261,7 @@
             allticketsBtn.TabIndex = 11;
             allticketsBtn.UseVisualStyleBackColor = true;
             allticketsBtn.Click += allticketsBtn_Click;
+            allticketsBtn.MouseHover += allticketsBtn_MouseHover;
             // 
             // toolbarPanel
             // 
@@ -256,16 +277,16 @@
             // 
             tableLayoutPanel1.BackColor = Color.Transparent;
             tableLayoutPanel1.ColumnCount = 10;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.70502961F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.7877235F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 12.7877235F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 23.8704185F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.26257467F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.26257467F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.26257467F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 21.31287F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 13.043478F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.70502961F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.96078455F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.705883F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.705883F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 27.450983F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.90196133F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.90196133F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 4.90196133F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.5098038F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle());
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 1.9607842F));
             tableLayoutPanel1.Controls.Add(logoutBtn, 8, 0);
             tableLayoutPanel1.Controls.Add(addTcktBtn, 1, 0);
             tableLayoutPanel1.Controls.Add(panelSearch, 3, 0);
@@ -320,14 +341,14 @@
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { cerrToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.RenderMode = ToolStripRenderMode.Professional;
-            contextMenuStrip1.Size = new Size(211, 60);
+            contextMenuStrip1.Size = new Size(188, 32);
             // 
             // cerrToolStripMenuItem
             // 
             cerrToolStripMenuItem.DisplayStyle = ToolStripItemDisplayStyle.Text;
             cerrToolStripMenuItem.Name = "cerrToolStripMenuItem";
             cerrToolStripMenuItem.Padding = new Padding(5, 5, 5, 1);
-            cerrToolStripMenuItem.Size = new Size(220, 28);
+            cerrToolStripMenuItem.Size = new Size(197, 28);
             cerrToolStripMenuItem.Text = "Cerrar Sesión";
             cerrToolStripMenuItem.Click += cerrToolStripMenuItem_Click;
             // 
@@ -347,7 +368,6 @@
             Controls.Add(maincontainerPanel);
             Controls.Add(toolbarPanel);
             Controls.Add(menuPanel);
-            Controls.Add(AllTicketView);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MainMenu";
@@ -369,7 +389,6 @@
         private Button srchTcktBtn;
         private TextBox searchBox;
         private Button refreshBtn;
-        private ListView AllTicketView;
         private Panel menuPanel;
         private TableLayoutPanel menuButtonsPanel;
         private Button homeBtn;
@@ -383,5 +402,7 @@
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem cerrToolStripMenuItem;
         private Panel maincontainerPanel;
+        private Button assignTicketsBtn;
+        private Button createUsersBtn;
     }
 }

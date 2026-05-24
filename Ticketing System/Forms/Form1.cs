@@ -17,6 +17,25 @@ namespace Ticketing_System
             DataAccess.InitializeDatabase();
             logoutBtn.Text = Session.name;
 
+            switch (Session.confirmRole(Session.role))
+            {
+                case Session.Role.Tecnico:
+                    assignTicketsBtn.Visible = false;
+                    createUsersBtn.Visible = false;
+                    break;
+                case Session.Role.Admin:
+                    assignTicketsBtn.Visible = true;
+                    createUsersBtn.Visible = true;
+                    break;
+
+            }
+
+            showToolTip(homeBtn, "Dashboard");
+            showToolTip(openticketsBtn, "Mis tickets");
+            showToolTip(closedicketsBtn, "Tickets cerrados");
+            showToolTip(allticketsBtn, "Todos los tickets");
+            showToolTip(assignTicketsBtn, "Asignar tickets");
+            showToolTip(createUsersBtn, "Crear usuarios");
 
         }
 
@@ -33,6 +52,17 @@ namespace Ticketing_System
             path.CloseFigure();
 
             btn.Region = new Region(path);
+        }
+
+        private void showToolTip(Button button, string phrase)
+        {
+            ToolTip toolTip = new ToolTip();
+            toolTip.UseFading = true;
+            toolTip.UseAnimation = true;
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 1000;
+            toolTip.ReshowDelay = 500;
+            toolTip.SetToolTip(button, phrase);
         }
 
         /*private void RoundPanel(Panel panel, int radius)
@@ -67,11 +97,11 @@ namespace Ticketing_System
         //Panel Search Paint
 
 
-        private void LoadTickets()
+        /*private void LoadTickets()
         {
-            AllTicketView.Items.Clear();
+            //AllTicketView.Items.Clear();
 
-            DataTable table = DataAccess.GetTickets();
+            //DataTable table = DataAccess.GetTickets();
 
             foreach (DataRow row in table.Rows)
             {
@@ -84,9 +114,9 @@ namespace Ticketing_System
                 item.SubItems.Add(row["UserName"].ToString());
                 item.SubItems.Add(row["UserEmail"].ToString());
 
-                AllTicketView.Items.Add(item);
+                //AllTicketView.Items.Add(item);
             }
-        }
+        }*/
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -111,24 +141,18 @@ namespace Ticketing_System
         //Este se puede quedar asi, tiene que cambiar a allticketsview dentro del usercontrol
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            LoadTickets();
+            //LoadTickets();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            LoadTickets();
-            AllTicketView.Columns.Add("ID", 50);
-            AllTicketView.Columns.Add("Título", 250);
-            AllTicketView.Columns.Add("Estado", 100);
-            AllTicketView.Columns.Add("Prioridad", 80);
-            AllTicketView.Columns.Add("Nombre", 80);
-            AllTicketView.Columns.Add("Correo", 150);
+            //LoadTickets();
             //En vez de correo sera fecha
             RoundButton(addTcktBtn, 30);
             RoundButton(logoutBtn, 30);
         }
 
-        private void AllTicketView_SelectedIndexChanged(object sender, EventArgs e)
+        /*private void AllTicketView_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (AllTicketView.SelectedItems.Count > 0)
             {
@@ -141,7 +165,7 @@ namespace Ticketing_System
                 TicketDetail.Show();
 
             }
-        }
+        }*/
 
         private void addTcktBtn_MouseEnter(object sender, EventArgs e)
         {
@@ -202,18 +226,21 @@ namespace Ticketing_System
             logoutBtn.ForeColor = Color.FromArgb(40, 40, 40);
         }
 
-        private void allticketsBtn_Click(object sender, EventArgs e)
+
+        private void openticketsBtn_Click(object sender, EventArgs e)
         {
-            TicketViewControl getAllTickets = new TicketViewControl("Todos los tickets", DataAccess.CountAllTickets());
+            TicketViewControl getAllTickets = new TicketViewControl("mine");
             maincontainerPanel.Controls.Clear();
             getAllTickets.Dock = DockStyle.Fill;
             maincontainerPanel.Controls.Add(getAllTickets);
-
         }
 
         private void closedicketsBtn_Click(object sender, EventArgs e)
         {
+            TicketViewControl getAllTickets = new TicketViewControl("closed");
             maincontainerPanel.Controls.Clear();
+            getAllTickets.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(getAllTickets);
         }
 
         private void cerrToolStripMenuItem_Click(object sender, EventArgs e)
@@ -224,5 +251,20 @@ namespace Ticketing_System
             Session.role = "";
             Application.Restart();
         }
+
+        private void allticketsBtn_Click(object sender, EventArgs e)
+        {
+            TicketViewControl getAllTickets = new TicketViewControl("all");
+            maincontainerPanel.Controls.Clear();
+            getAllTickets.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(getAllTickets);
+        }
+
+        private void allticketsBtn_MouseHover(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
