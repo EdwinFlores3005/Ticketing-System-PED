@@ -144,10 +144,7 @@ namespace Ticketing_System.Data
                 using var command = new SqliteCommand(query, db);
                 if (where.Contains("@userId"))
                 {
-                    command.Parameters.AddWithValue(
-                        "@userId",
-                        Session.id
-                    );
+                    command.Parameters.AddWithValue("@userId",Session.id);
                 }
 
                 using var reader = command.ExecuteReader();

@@ -100,6 +100,7 @@
             sortbyBox.Name = "sortbyBox";
             sortbyBox.Size = new Size(151, 27);
             sortbyBox.TabIndex = 4;
+            sortbyBox.SelectedIndexChanged += sortbyBox_SelectedIndexChanged;
             // 
             // TicketViewControl
             // 
