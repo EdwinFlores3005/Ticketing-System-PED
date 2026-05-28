@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Ticketing_System.Models
 {
-    internal class TicketHistory
+    public class TicketHistory
     {
+        public int Id { get; set; }
+        public int TicketId { get; set; }
+        public string Change { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public int UpdatedById { get; set; }
+        public string UpdatedByName { get; set; }
+
     }
 }

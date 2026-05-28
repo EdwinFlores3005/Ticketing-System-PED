@@ -33,7 +33,6 @@
             addTcktBtn = new Button();
             srchTcktBtn = new Button();
             searchBox = new TextBox();
-            refreshBtn = new Button();
             menuPanel = new Panel();
             menuButtonsPanel = new TableLayoutPanel();
             createUsersBtn = new Button();
@@ -112,24 +111,6 @@
             searchBox.Click += searchBox_Click;
             searchBox.Enter += searchBox_Enter;
             searchBox.Leave += searchBox_Leave;
-            // 
-            // refreshBtn
-            // 
-            refreshBtn.BackColor = Color.White;
-            refreshBtn.Cursor = Cursors.Hand;
-            refreshBtn.FlatAppearance.BorderSize = 0;
-            refreshBtn.FlatAppearance.MouseDownBackColor = Color.White;
-            refreshBtn.FlatAppearance.MouseOverBackColor = Color.White;
-            refreshBtn.FlatStyle = FlatStyle.Flat;
-            refreshBtn.Font = new Font("Tahoma", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            refreshBtn.Image = Properties.Resources.restart20;
-            refreshBtn.Location = new Point(877, 6);
-            refreshBtn.Name = "refreshBtn";
-            refreshBtn.Size = new Size(61, 52);
-            refreshBtn.TabIndex = 5;
-            refreshBtn.UseVisualStyleBackColor = false;
-            refreshBtn.Click += refreshBtn_Click;
-            refreshBtn.MouseLeave += refreshBtn_MouseLeave;
             // 
             // menuPanel
             // 
@@ -290,7 +271,6 @@
             tableLayoutPanel1.Controls.Add(logoutBtn, 8, 0);
             tableLayoutPanel1.Controls.Add(addTcktBtn, 1, 0);
             tableLayoutPanel1.Controls.Add(panelSearch, 3, 0);
-            tableLayoutPanel1.Controls.Add(refreshBtn, 5, 0);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.Padding = new Padding(3);
@@ -388,7 +368,6 @@
         private Button addTcktBtn;
         private Button srchTcktBtn;
         private TextBox searchBox;
-        private Button refreshBtn;
         private Panel menuPanel;
         private TableLayoutPanel menuButtonsPanel;
         private Button homeBtn;

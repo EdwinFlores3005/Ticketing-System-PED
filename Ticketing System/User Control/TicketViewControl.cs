@@ -48,8 +48,8 @@ namespace Ticketing_System.User_Control
             {
                 tickettypelabel.Text = "Todos los tickets";
                 tickets = DataAccess.GetTickets("WHERE T.Status != 'Closed'");
-                
-            }   
+
+            }
             else if (currentTicketType == "mine")
             {
                 tickettypelabel.Text = "Mis tickets";
@@ -69,7 +69,7 @@ namespace Ticketing_System.User_Control
         {
             allticketsView.BeginUpdate();
             allticketsView.Items.Clear();
-            
+
 
             foreach (Ticket ticket in tickets)
             {
@@ -145,12 +145,25 @@ namespace Ticketing_System.User_Control
 
         private void SortOptions()
         {
-            if(currentTicketType == "closed")
+            if (currentTicketType == "closed")
             {
                 sortbyBox.Items.Clear();
                 sortbyBox.Items.Add("Todos los tickets");
                 sortbyBox.Items.Add("Mis tickets");
             }
+        }
+
+        private async void ShowStatus(string message)
+        {
+            statusLbl.Text = message;
+            statuschangestrip.Visible = true;
+            statuschangestrip.BackColor = Color.White;
+            statusLbl.BackColor = Color.White;
+            statusLbl.Visible = true;
+
+            await Task.Delay(3000);
+
+            statuschangestrip.Visible = false;
         }
 
         private void sortbyBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -219,6 +232,34 @@ namespace Ticketing_System.User_Control
                 }
             }
         }
+
+        private void allticketsView_ItemActivate(object sender, EventArgs e)
+        {
+            ListViewItem activatedItem = allticketsView.SelectedItems[0];
+            if (activatedItem != null)
+            {
+                int ticketID = Convert.ToInt32(activatedItem.Text);
+
+                Ticket ticket = DataAccess.GetSelectedTicket(ticketID);
+
+                TicketDetailForm form = new TicketDetailForm(ticket);
+
+                if(form.ShowDialog() == DialogResult.OK)
+                {
+                    ShowStatus("El ticket fue actualizado correctamente");
+                    LoadTickets();
+                }
+                else
+                {
+                    ShowStatus("No se realizaron cambios");
+                }
+                
+            }
+           
+
+        }
+
+
     }
 }
 

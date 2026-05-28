@@ -33,6 +33,9 @@
             allTicketsNumber = new Label();
             sortbyLbl = new Label();
             sortbyBox = new ComboBox();
+            statuschangestrip = new StatusStrip();
+            statusLbl = new ToolStripStatusLabel();
+            statuschangestrip.SuspendLayout();
             SuspendLayout();
             // 
             // allticketsView
@@ -44,10 +47,11 @@
             allticketsView.Location = new Point(0, 96);
             allticketsView.MultiSelect = false;
             allticketsView.Name = "allticketsView";
-            allticketsView.Size = new Size(1528, 744);
+            allticketsView.Size = new Size(1528, 728);
             allticketsView.TabIndex = 0;
             allticketsView.UseCompatibleStateImageBehavior = false;
             allticketsView.View = View.Details;
+            allticketsView.ItemActivate += allticketsView_ItemActivate;
             // 
             // tickettypelabel
             // 
@@ -102,10 +106,30 @@
             sortbyBox.TabIndex = 4;
             sortbyBox.SelectedIndexChanged += sortbyBox_SelectedIndexChanged;
             // 
+            // statuschangestrip
+            // 
+            statuschangestrip.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            statuschangestrip.ImageScalingSize = new Size(20, 20);
+            statuschangestrip.Items.AddRange(new ToolStripItem[] { statusLbl });
+            statuschangestrip.Location = new Point(0, 814);
+            statuschangestrip.Name = "statuschangestrip";
+            statuschangestrip.Size = new Size(1528, 26);
+            statuschangestrip.TabIndex = 5;
+            statuschangestrip.Visible = false;
+            // 
+            // statusLbl
+            // 
+            statusLbl.Name = "statusLbl";
+            statusLbl.Size = new Size(151, 20);
+            statusLbl.Text = "toolStripStatusLabel1";
+            statusLbl.Visible = false;
+            // 
             // TicketViewControl
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            Controls.Add(statuschangestrip);
             Controls.Add(sortbyBox);
             Controls.Add(sortbyLbl);
             Controls.Add(allTicketsNumber);
@@ -113,6 +137,8 @@
             Controls.Add(allticketsView);
             Name = "TicketViewControl";
             Size = new Size(1528, 840);
+            statuschangestrip.ResumeLayout(false);
+            statuschangestrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -124,5 +150,7 @@
         private Label allTicketsNumber;
         private Label sortbyLbl;
         private ComboBox sortbyBox;
+        private StatusStrip statuschangestrip;
+        private ToolStripStatusLabel statusLbl;
     }
 }

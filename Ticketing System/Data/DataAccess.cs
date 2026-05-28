@@ -152,31 +152,20 @@ namespace Ticketing_System.Data
                 while (reader.Read())
                 {
                     Ticket ticket = new Ticket();
-
                     ticket.Id = Convert.ToInt32(reader["TicketId"]);
-
                     ticket.Title = reader["Title"].ToString();
-
                     ticket.Description = reader["Description"].ToString();
-
                     ticket.Status = reader["Status"].ToString();
-
                     ticket.Priority = Convert.ToInt32(reader["Priority"]);
-
                     ticket.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
-
                     ticket.CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]);
-
                     if (reader["AssignedToUserId"] != DBNull.Value)
                     {
                         ticket.AssignedToUserId =
                             Convert.ToInt32(reader["AssignedToUserId"]);
                     }
-
                     ticket.UserName = reader["UserName"].ToString();
-
                     ticket.UserEmail = reader["UserEmail"].ToString();
-
                     ticket.AssignedAgentName = reader["AssignedAgentName"].ToString();
 
                     list.Add(ticket);
@@ -237,55 +226,170 @@ namespace Ticketing_System.Data
             }
         }
 
-        public static void LoadTicket(int ticketId, Label title, Label user, Label email, Label agent, ComboBox state, ComboBox priority, TextBox description, TextBox usertime)
+        
+        public static Ticket GetSelectedTicket(int ticketId)
         {
+            Ticket ticket = null;
+
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
             {
                 db.Open();
 
                 string query = @"
-            SELECT  
-                T.Id AS TicketId, 
-                T.Title AS Title, 
-                T.Status AS Status, 
-                T.Description AS Description, 
-                CASE T.Priority 
-                    WHEN 1 THEN 'Crítico' 
-                    WHEN 2 THEN 'Alta' 
-                    WHEN 3 THEN 'Media' 
-                    WHEN 4 THEN 'Baja' 
-                END AS Priority,
-                strftime ('%e/%m/%Y %H:%M', T.CreatedAt) AS CreatedDate,
-                U.Name AS UserName, 
-                U.Email AS UserEmail, 
-                A.Name AS Agent
-            FROM Tickets T 
-            LEFT JOIN Users U 
+                SELECT  
+                T.Id AS Id,
+                T.Title,
+                T.Description,
+                T.Status,
+                T.Priority,
+                T.CreatedAt,
+                T.CreatedByUserId,
+                T.AssignedToUserId,
+                U.Name AS UserName,
+                U.Email AS UserEmail,
+                A.Name AS AssignedAgentName
+                FROM Tickets T
+                LEFT JOIN Users U
                 ON T.CreatedByUserId = U.Id
-            LEFT JOIN Users A 
+                LEFT JOIN Users A
                 ON T.AssignedToUserId = A.Id
-            WHERE T.Id = @id";
+                WHERE T.Id = @id";
 
-                using var cmd = new SqliteCommand(query, db);
+                using var cmd = new SqliteCommand( query, db);
                 cmd.Parameters.AddWithValue("@id", ticketId);
 
                 using var reader = cmd.ExecuteReader();
 
                 if (reader.Read())
                 {
-                    title.Text = reader["Title"].ToString();
-                    user.Text = reader["UserName"].ToString();
-                    email.Text = reader["UserEmail"].ToString();
-                    agent.Text = reader["Agent"].ToString();
-                    state.Text = reader["Status"].ToString();
-                    priority.Text = reader["Priority"].ToString();
-                    description.Text = reader["Description"].ToString();
-                    usertime.Text = reader["Username"].ToString().Split(' ')[0] + " | " + reader["CreatedDate"].ToString(); //esto lo podria separar en dos textboxes
+                    ticket = new Ticket();
+                    ticket.Id = Convert.ToInt32(reader["Id"]);
+                    ticket.Title = reader["Title"].ToString();
+                    ticket.Description = reader["Description"].ToString();
+                    ticket.Status = reader["Status"].ToString();
+                    ticket.Priority = Convert.ToInt32(reader["Priority"]);
+                    ticket.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+                    ticket.CreatedByUserId = Convert.ToInt32(reader["CreatedByUserId"]);
+                    if (reader["AssignedToUserId"] != DBNull.Value)
+                    {
+                        ticket.AssignedToUserId =
+                            Convert.ToInt32(reader["AssignedToUserId"]);
+                    }
+
+                    ticket.UserName = reader["UserName"].ToString();
+                    ticket.UserEmail = reader["UserEmail"].ToString();
+                    ticket.AssignedAgentName = reader["AssignedAgentName"].ToString();
                 }
+
+            }
+
+                return ticket;
+        }
+
+        public static void UpdateTicket(int ticketId, string status, int priority)
+        //Aqui se puede agregar para modificar el agente a futuro
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                UPDATE Tickets
+                SET
+                    Status = @status,
+                    Priority = @priority
+                WHERE Id = @ticketId";
+
+                using var cmd = new SqliteCommand(query, db);
+                cmd.Parameters.AddWithValue("@status", status);
+                cmd.Parameters.AddWithValue("@priority", priority);
+                cmd.Parameters.AddWithValue("@ticketId", ticketId);
+                cmd.ExecuteNonQuery();
+                db.Close();
             }
         }
 
-        
+        public static void AddHistory(int ticketId, string change, int updatedById)
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                INSERT INTO TicketHistory
+                (TicketId, Change, CreatedAt,UpdatedById)
+                VALUES
+                (@ticketId, @change, @createdAt, @updatedById)";
+
+                using var cmd = new SqliteCommand(query, db);
+
+                cmd.Parameters.AddWithValue("@ticketId", ticketId);
+                cmd.Parameters.AddWithValue("@change", change);
+                cmd.Parameters.AddWithValue("@createdAt", DateTime.Now);
+                cmd.Parameters.AddWithValue("@updatedById", updatedById);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static List<TicketHistory> GetTicketHistory(int ticketId)
+        {
+            List<TicketHistory> historyList = new List<TicketHistory>();
+
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                SELECT
+                    H.Id,
+                    H.TicketId,
+                    H.Change,
+                    H.CreatedAt,
+                    H.UpdatedById,
+                    U.Name AS UpdatedByName
+                FROM TicketHistory H
+                LEFT JOIN Users U
+                    ON H.UpdatedById = U.Id
+                WHERE H.TicketId = @ticketId
+                ORDER BY H.CreatedAt ASC";
+
+                using var cmd = new SqliteCommand(query, db);
+
+                cmd.Parameters.AddWithValue("@ticketId", ticketId);
+
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    TicketHistory history = new TicketHistory();
+                    history.Id = Convert.ToInt32(reader["Id"]);
+                    history.TicketId = Convert.ToInt32(reader["TicketId"]);
+                    history.Change = reader["Change"].ToString();
+                    history.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+                    history.UpdatedById = Convert.ToInt32(reader["UpdatedById"]);
+                    history.UpdatedByName = reader["UpdatedByName"].ToString();
+
+                    historyList.Add(history);
+                }
+            }
+
+            return historyList;
+        }
+
+        public static Queue<TicketHistory> GetTicketHistoryQueue(int ticketId)
+        {
+            List<TicketHistory> historyList = GetTicketHistory(ticketId);
+
+            Queue<TicketHistory> historyQueue = new Queue<TicketHistory>();
+
+            foreach (TicketHistory history in historyList)
+            {
+                historyQueue.Enqueue(history);
+            }
+
+            return historyQueue;
+        }
     }
 
 }
