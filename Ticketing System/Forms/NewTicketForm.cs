@@ -19,25 +19,81 @@ namespace Ticketing_System
             DataAccess.InitializeDatabase();
         }
 
-        private void createBtn_Click(object sender, EventArgs e)
+            private void createBtn_Click(object sender, EventArgs e)
         {
-            string email = emailTxtBox.Text;
-            string title = titleTxtBox.Text;
+            string email = emailTxtBox.Text.Trim();
+
+            string title = titleTxtBox.Text.Trim();
+
+            string description = descTxtBox.Text.Trim();
+
+            string status = statusBox.Text;
+
+            // VALIDAR TEXTBOXES
+            if (
+                string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(title) ||
+                string.IsNullOrWhiteSpace(description)
+            )
+            {
+                MessageBox.Show(
+                    "Todos los campos son obligatorios",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
+
+            // VALIDAR COMBOBOXES
+            if (
+                prioBox.SelectedIndex == -1 ||
+                statusBox.SelectedIndex == -1
+            )
+            {
+                MessageBox.Show(
+                    "Debes seleccionar prioridad y estado",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
+
+            // VALIDAR EMAIL
+            if (!email.Contains("@"))
+            {
+                MessageBox.Show(
+                    "Correo inválido",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                return;
+            }
+
             int priority = prioBox.SelectedIndex + 1;
-            string notes = descTxtBox.Text;
 
-            if (!string.IsNullOrEmpty(email) || !string.IsNullOrEmpty(title) || !string.IsNullOrEmpty(notes))
-            {
-                DataAccess.AddTicket(title, notes, email, priority);
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+            DataAccess.AddTicket(
+                title,
+                description,
+                email,
+                priority,
+                status
+            );
 
-            }
-            else
-            {
-                MessageBox.Show("Los campos estan incompletos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            MessageBox.Show(
+                "Ticket creado correctamente"
+            );
+
+            this.DialogResult = DialogResult.OK;
+
+            this.Close();
         }
+        
 
         private void cancelBtn_Click(object sender, EventArgs e)
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.VisualBasic.ApplicationServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.Generic;
@@ -68,49 +69,105 @@ namespace Ticketing_System.Data
             }
         }
 
-        public static void AddTicket(string title, string description, string email, int priority)
+        public static void AddTicket(string title, string description, string email, int priority, string status)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
             {
                 db.Open();
 
-                // Buscar el usuario por email
-                string getUserQuery = "SELECT Id FROM Users WHERE Email = @email";
-                using var getUserCmd = new SqliteCommand(getUserQuery, db);
-                getUserCmd.Parameters.AddWithValue("@email", email);
+                int userId = GetOrCreateUser(email);
 
-                var userId = getUserCmd.ExecuteScalar();
-
-                // Validación simple
-                if (userId == null)
-                {
-                    throw new Exception("El usuario con ese email no existe");
-
-                }
-
-                // Insertar ticket con ese UserId
                 string insertQuery = @"
-        INSERT INTO Tickets (Title, Description, Status, CreatedAt, Priority, CreatedByUserId, AssignedToUserId)
-        VALUES (@title, @description, @status, @createdAt, @priority, @userId, @agentId);";
+        INSERT INTO Tickets
+        (
+            Title,
+            Description,
+            Status,
+            CreatedAt,
+            Priority,
+            CreatedByUserId,
+            AssignedToUserId
+        )
+        VALUES
+        (
+            @title,
+            @description,
+            @status,
+            @createdAt,
+            @priority,
+            @userId,
+            @agentId
+        );";
 
-                using var insertCmd = new SqliteCommand(insertQuery, db);
+                using var insertCmd =
+                    new SqliteCommand(insertQuery, db);
 
                 insertCmd.Parameters.AddWithValue("@title", title);
-                insertCmd.Parameters.AddWithValue("@description", description);
-                insertCmd.Parameters.AddWithValue("@status", "New");
-                insertCmd.Parameters.AddWithValue("@createdAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                insertCmd.Parameters.AddWithValue("@priority", priority);
-                insertCmd.Parameters.AddWithValue("@userId", userId);
-                insertCmd.Parameters.AddWithValue("@agentId", 1);
 
+                insertCmd.Parameters.AddWithValue("@description", description);
+
+                insertCmd.Parameters.AddWithValue("@status", status);
+
+                insertCmd.Parameters.AddWithValue(
+                    "@createdAt",
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                );
+
+                insertCmd.Parameters.AddWithValue("@priority", priority);
+
+                insertCmd.Parameters.AddWithValue("@userId", userId);
+
+                insertCmd.Parameters.AddWithValue("@agentId", Session.id);
 
                 insertCmd.ExecuteNonQuery();
-
-                db.Close();
             }
         }
 
-      
+        public static int GetOrCreateUser(string email)
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string getUserQuery = "SELECT Id FROM Users WHERE Email = @email";
+
+                using var getUserCmd = new SqliteCommand(getUserQuery, db);
+
+                getUserCmd.Parameters.AddWithValue("@email", email);
+
+                var result = getUserCmd.ExecuteScalar();
+
+                // Usuario existe
+                if (result != null)
+                {
+                    return Convert.ToInt32(result);
+                }
+
+                // Crear customer automáticamente
+                string insertUserQuery = @"INSERT INTO Users (Name, Email, Password, Role) VALUES
+                (
+                    @name,
+                    @email,
+                    '',
+                    'Cliente'
+                );
+
+                SELECT last_insert_rowid();";
+
+                using var insertCmd = new SqliteCommand(insertUserQuery, db);
+
+                string name = email.Split('@')[0];
+
+                insertCmd.Parameters.AddWithValue("@name", name);
+                insertCmd.Parameters.AddWithValue("@email", email);
+
+                int newUserId = Convert.ToInt32(insertCmd.ExecuteScalar());
+
+                return newUserId;
+            }
+        }
+
+
 
         //Retornar todos los tickets
         public static List<Ticket> GetTickets(string where)
@@ -286,7 +343,7 @@ namespace Ticketing_System.Data
                 return ticket;
         }
 
-        public static void UpdateTicket(int ticketId, string status, int priority)
+        public static void UpdateTicket(int ticketId, string status, int priority, int assignedToUserId)
         //Aqui se puede agregar para modificar el agente a futuro
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -297,12 +354,14 @@ namespace Ticketing_System.Data
                 UPDATE Tickets
                 SET
                     Status = @status,
-                    Priority = @priority
+                    Priority = @priority,
+                    AssignedToUserId = @agentId
                 WHERE Id = @ticketId";
 
                 using var cmd = new SqliteCommand(query, db);
                 cmd.Parameters.AddWithValue("@status", status);
                 cmd.Parameters.AddWithValue("@priority", priority);
+                cmd.Parameters.AddWithValue("@agentId",assignedToUserId);
                 cmd.Parameters.AddWithValue("@ticketId", ticketId);
                 cmd.ExecuteNonQuery();
                 db.Close();
@@ -389,6 +448,73 @@ namespace Ticketing_System.Data
             }
 
             return historyQueue;
+        }
+
+        public static void AddUser(string name, string email, string password, string role)
+        {
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                INSERT INTO Users
+                (
+                    Name,
+                    Email,
+                    Password,
+                    Role
+                )
+                VALUES
+                (
+                    @name,
+                    @email,
+                    @password,
+                    @role
+                )";
+
+                using var cmd =
+                    new SqliteCommand(query, db);
+
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@role", role);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static List<UserClass> GetAgents()
+        {
+            List<UserClass> agents = new List<UserClass>();
+
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                SELECT Id, Name
+                FROM Users
+                WHERE Role = 'Tecnico'
+                OR Role = 'Admin'";
+
+                using var cmd = new SqliteCommand(query, db);
+
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    UserClass user = new UserClass();
+
+                    user.Id = Convert.ToInt32(reader["Id"]);
+
+                    user.Name = reader["Name"].ToString();
+
+                    agents.Add(user);
+                }
+            }
+
+            return agents;
         }
     }
 

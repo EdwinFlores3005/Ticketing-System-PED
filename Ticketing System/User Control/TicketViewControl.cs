@@ -11,6 +11,8 @@ namespace Ticketing_System.User_Control
     {
         private string currentTicketType;
         private List<Ticket> tickets = new List<Ticket>();
+        private List<Ticket> Alltickets = new List<Ticket>();
+        private Dictionary<int, Ticket> ticketDictionary = new Dictionary<int, Ticket>();
 
         public TicketViewControl(string ticketType)
         {
@@ -39,11 +41,19 @@ namespace Ticketing_System.User_Control
             allticketsView.Columns.Add("Prioridad", 120, HorizontalAlignment.Center);
             allticketsView.Columns.Add("Creado Por", 170);
             allticketsView.Columns.Add("Correo", 295);
-            allticketsView.Columns.Add("Asignado A", 195, HorizontalAlignment.Center);
+            allticketsView.Columns.Add("Asignado A", 195, HorizontalAlignment.Left);
         }
 
         private void LoadTickets()
         {
+            Alltickets = DataAccess.GetTickets("");
+            ticketDictionary.Clear();
+
+            foreach (Ticket ticket in Alltickets)
+            {
+                ticketDictionary[ticket.Id] = ticket;
+            };
+
             if (currentTicketType == "all")
             {
                 tickettypelabel.Text = "Todos los tickets";

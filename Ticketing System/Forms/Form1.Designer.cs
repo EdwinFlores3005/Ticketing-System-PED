@@ -35,12 +35,11 @@
             searchBox = new TextBox();
             menuPanel = new Panel();
             menuButtonsPanel = new TableLayoutPanel();
-            createUsersBtn = new Button();
-            assignTicketsBtn = new Button();
             homeBtn = new Button();
             openticketsBtn = new Button();
             closedicketsBtn = new Button();
             allticketsBtn = new Button();
+            createUsersBtn = new Button();
             toolbarPanel = new Panel();
             tableLayoutPanel1 = new TableLayoutPanel();
             logoutBtn = new Button();
@@ -95,6 +94,7 @@
             srchTcktBtn.Size = new Size(32, 24);
             srchTcktBtn.TabIndex = 2;
             srchTcktBtn.UseVisualStyleBackColor = false;
+            srchTcktBtn.Click += srchTcktBtn_Click;
             // 
             // searchBox
             // 
@@ -127,12 +127,11 @@
             menuButtonsPanel.BackColor = Color.Transparent;
             menuButtonsPanel.ColumnCount = 1;
             menuButtonsPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            menuButtonsPanel.Controls.Add(createUsersBtn, 0, 6);
-            menuButtonsPanel.Controls.Add(assignTicketsBtn, 0, 5);
             menuButtonsPanel.Controls.Add(homeBtn, 0, 1);
             menuButtonsPanel.Controls.Add(openticketsBtn, 0, 2);
             menuButtonsPanel.Controls.Add(closedicketsBtn, 0, 3);
             menuButtonsPanel.Controls.Add(allticketsBtn, 0, 4);
+            menuButtonsPanel.Controls.Add(createUsersBtn, 0, 5);
             menuButtonsPanel.Location = new Point(0, 0);
             menuButtonsPanel.Name = "menuButtonsPanel";
             menuButtonsPanel.RowCount = 7;
@@ -145,36 +144,6 @@
             menuButtonsPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
             menuButtonsPanel.Size = new Size(72, 552);
             menuButtonsPanel.TabIndex = 8;
-            // 
-            // createUsersBtn
-            // 
-            createUsersBtn.Cursor = Cursors.Hand;
-            createUsersBtn.FlatAppearance.BorderSize = 0;
-            createUsersBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
-            createUsersBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
-            createUsersBtn.FlatStyle = FlatStyle.Flat;
-            createUsersBtn.Image = Properties.Resources.createUsers;
-            createUsersBtn.Location = new Point(0, 468);
-            createUsersBtn.Margin = new Padding(0);
-            createUsersBtn.Name = "createUsersBtn";
-            createUsersBtn.Size = new Size(72, 78);
-            createUsersBtn.TabIndex = 12;
-            createUsersBtn.UseVisualStyleBackColor = true;
-            // 
-            // assignTicketsBtn
-            // 
-            assignTicketsBtn.Cursor = Cursors.Hand;
-            assignTicketsBtn.FlatAppearance.BorderSize = 0;
-            assignTicketsBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
-            assignTicketsBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
-            assignTicketsBtn.FlatStyle = FlatStyle.Flat;
-            assignTicketsBtn.Image = Properties.Resources.assign;
-            assignTicketsBtn.Location = new Point(0, 390);
-            assignTicketsBtn.Margin = new Padding(0);
-            assignTicketsBtn.Name = "assignTicketsBtn";
-            assignTicketsBtn.Size = new Size(72, 78);
-            assignTicketsBtn.TabIndex = 11;
-            assignTicketsBtn.UseVisualStyleBackColor = true;
             // 
             // homeBtn
             // 
@@ -243,6 +212,22 @@
             allticketsBtn.UseVisualStyleBackColor = true;
             allticketsBtn.Click += allticketsBtn_Click;
             allticketsBtn.MouseHover += allticketsBtn_MouseHover;
+            // 
+            // createUsersBtn
+            // 
+            createUsersBtn.Cursor = Cursors.Hand;
+            createUsersBtn.FlatAppearance.BorderSize = 0;
+            createUsersBtn.FlatAppearance.MouseDownBackColor = Color.SeaGreen;
+            createUsersBtn.FlatAppearance.MouseOverBackColor = Color.SeaGreen;
+            createUsersBtn.FlatStyle = FlatStyle.Flat;
+            createUsersBtn.Image = Properties.Resources.createUsers;
+            createUsersBtn.Location = new Point(0, 390);
+            createUsersBtn.Margin = new Padding(0);
+            createUsersBtn.Name = "createUsersBtn";
+            createUsersBtn.Size = new Size(72, 78);
+            createUsersBtn.TabIndex = 12;
+            createUsersBtn.UseVisualStyleBackColor = true;
+            createUsersBtn.Click += createUsersBtn_Click;
             // 
             // toolbarPanel
             // 
@@ -381,7 +366,6 @@
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem cerrToolStripMenuItem;
         private Panel maincontainerPanel;
-        private Button assignTicketsBtn;
         private Button createUsersBtn;
     }
 }

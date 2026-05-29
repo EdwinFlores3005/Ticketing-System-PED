@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,6 +29,9 @@ namespace Ticketing_System
                 prioBox.Enabled = false;
             }
 
+            assignAgentBox.Visible = Session.role == "Admin";
+            assignAgentLbl.Visible = Session.role == "Admin";
+
             ticketIdTxt.Text = ticket.Id.ToString();
             usernameTxt.Text = ticket.UserName.ToString();
             emailTxt.Text = ticket.UserEmail.ToString();
@@ -43,7 +47,12 @@ namespace Ticketing_System
                     stateBox.SelectedIndex = i;
             }
 
+
+
             LoadHistory();
+            LoadAgents();
+
+
         }
 
         private string GetPriorityText(int priority)
@@ -99,9 +108,22 @@ namespace Ticketing_System
             }
         }
 
+        private void LoadAgents()
+        {
+            List<UserClass> agents = DataAccess.GetAgents();
+
+            assignAgentBox.DataSource = agents;
+
+            assignAgentBox.DisplayMember = "Name";
+
+            assignAgentBox.ValueMember = "Id";
+
+            assignAgentBox.SelectedValue = currentTicket.AssignedToUserId;
+        }
+
         private void Actualizar_Click(object sender, EventArgs e)
         {
-            bool changed = currentTicket.Status != stateBox.Text || currentTicket.Priority != prioBox.SelectedIndex + 1;
+            bool changed = currentTicket.Status != stateBox.Text || currentTicket.Priority != prioBox.SelectedIndex + 1 || currentTicket.AssignedToUserId != Convert.ToInt32(assignAgentBox.SelectedValue);
             bool noteAdded = !string.IsNullOrWhiteSpace(notesTxt.Text);
 
             if (currentTicket.Status != stateBox.Text)
@@ -114,17 +136,28 @@ namespace Ticketing_System
                 DataAccess.AddHistory(currentTicket.Id,$"La prioridad cambió de {GetPriorityText(currentTicket.Priority)} a {GetPriorityText(prioBox.SelectedIndex + 1)}", Session.id);
             }
 
+            if (currentTicket.AssignedToUserId != Convert.ToInt32(assignAgentBox.SelectedValue))
+            {
+                DataAccess.AddHistory(
+                    currentTicket.Id,
+                    $"Ticket reasignado a {assignAgentBox.Text}",
+                    Session.id
+                );
+            }
+
             if (noteAdded)
             {
                 DataAccess.AddHistory(currentTicket.Id, notesTxt.Text,Session.id);
             }
+
 
             if (changed)
             {
                 DataAccess.UpdateTicket(
                     currentTicket.Id,
                     stateBox.Text,
-                    prioBox.SelectedIndex + 1
+                    prioBox.SelectedIndex + 1,
+                    Convert.ToInt32(assignAgentBox.SelectedValue)
                 );
             }
 

@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TicketDetailForm));
             sideLayoutPanel = new TableLayoutPanel();
+            assignAgentBox = new ComboBox();
+            assignAgentLbl = new Label();
             ticketIdTxt = new Label();
             userLbl = new Label();
             agentLbl = new Label();
@@ -60,6 +62,8 @@
             sideLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 62.5F));
             sideLayoutPanel.ColumnStyles.Add(new ColumnStyle());
             sideLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 37.5F));
+            sideLayoutPanel.Controls.Add(assignAgentBox, 1, 12);
+            sideLayoutPanel.Controls.Add(assignAgentLbl, 1, 11);
             sideLayoutPanel.Controls.Add(ticketIdTxt, 1, 0);
             sideLayoutPanel.Controls.Add(userLbl, 1, 1);
             sideLayoutPanel.Controls.Add(agentLbl, 1, 5);
@@ -73,7 +77,9 @@
             sideLayoutPanel.Dock = DockStyle.Left;
             sideLayoutPanel.Location = new Point(0, 0);
             sideLayoutPanel.Name = "sideLayoutPanel";
-            sideLayoutPanel.RowCount = 11;
+            sideLayoutPanel.RowCount = 13;
+            sideLayoutPanel.RowStyles.Add(new RowStyle());
+            sideLayoutPanel.RowStyles.Add(new RowStyle());
             sideLayoutPanel.RowStyles.Add(new RowStyle());
             sideLayoutPanel.RowStyles.Add(new RowStyle());
             sideLayoutPanel.RowStyles.Add(new RowStyle());
@@ -87,6 +93,32 @@
             sideLayoutPanel.RowStyles.Add(new RowStyle());
             sideLayoutPanel.Size = new Size(232, 720);
             sideLayoutPanel.TabIndex = 1;
+            // 
+            // assignAgentBox
+            // 
+            assignAgentBox.BackColor = SystemColors.Window;
+            assignAgentBox.Dock = DockStyle.Fill;
+            assignAgentBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            assignAgentBox.FlatStyle = FlatStyle.Flat;
+            assignAgentBox.FormattingEnabled = true;
+            assignAgentBox.Location = new Point(9, 350);
+            assignAgentBox.Name = "assignAgentBox";
+            assignAgentBox.Size = new Size(216, 28);
+            assignAgentBox.TabIndex = 9;
+            // 
+            // assignAgentLbl
+            // 
+            assignAgentLbl.AutoSize = true;
+            assignAgentLbl.Dock = DockStyle.Fill;
+            assignAgentLbl.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            assignAgentLbl.ForeColor = Color.White;
+            assignAgentLbl.Location = new Point(9, 316);
+            assignAgentLbl.Name = "assignAgentLbl";
+            assignAgentLbl.Padding = new Padding(3);
+            assignAgentLbl.Size = new Size(216, 31);
+            assignAgentLbl.TabIndex = 9;
+            assignAgentLbl.Text = "Asignar Agente";
+            assignAgentLbl.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // ticketIdTxt
             // 
@@ -276,6 +308,7 @@
             initialNoteTxt.Multiline = true;
             initialNoteTxt.Name = "initialNoteTxt";
             initialNoteTxt.ReadOnly = true;
+            initialNoteTxt.ScrollBars = ScrollBars.Vertical;
             initialNoteTxt.Size = new Size(999, 159);
             initialNoteTxt.TabIndex = 2;
             initialNoteTxt.Text = "Initial Description";
@@ -377,7 +410,6 @@
         private Label agentTxt;
         private ComboBox stateBox;
         private Label userLbl;
-        private ComboBox prioBox;
         private Label usernameTxt;
         private Label ticketIdTxt;
         private Label titleLbl;
@@ -385,5 +417,8 @@
         private TableLayoutPanel tableLayoutPanel2;
         private TextBox notesTxt;
         private FlowLayoutPanel historyFlowPanel;
+        private ComboBox assignAgentBox;
+        private Label assignAgentLbl;
+        private ComboBox prioBox;
     }
 }

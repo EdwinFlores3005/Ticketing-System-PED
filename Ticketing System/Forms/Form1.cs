@@ -4,6 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using Ticketing_System.Data;
 using Ticketing_System.Forms;
+using Ticketing_System.Models;
 using Ticketing_System.User_Control;
 
 namespace Ticketing_System
@@ -20,11 +21,9 @@ namespace Ticketing_System
             switch (Session.confirmRole(Session.role))
             {
                 case Session.Role.Tecnico:
-                    assignTicketsBtn.Visible = false;
                     createUsersBtn.Visible = false;
                     break;
                 case Session.Role.Admin:
-                    assignTicketsBtn.Visible = true;
                     createUsersBtn.Visible = true;
                     break;
 
@@ -34,7 +33,6 @@ namespace Ticketing_System
             showToolTip(openticketsBtn, "Mis tickets");
             showToolTip(closedicketsBtn, "Tickets cerrados");
             showToolTip(allticketsBtn, "Todos los tickets");
-            showToolTip(assignTicketsBtn, "Asignar tickets");
             showToolTip(createUsersBtn, "Crear usuarios");
 
         }
@@ -65,59 +63,6 @@ namespace Ticketing_System
             toolTip.SetToolTip(button, phrase);
         }
 
-        /*private void RoundPanel(Panel panel, int radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-
-            path.StartFigure();
-            path.AddArc(0, 0, radius, radius, 180, 90);
-            path.AddArc(panel.Width - radius, 0, radius, radius, 270, 90);
-            path.AddArc(panel.Width - radius, panel.Height - radius, radius, radius, 0, 90);
-            path.AddArc(0, panel.Height - radius, radius, radius, 90, 90);
-            path.CloseFigure();
-
-            panel.Region = new Region(path);
-        }*/
-
-        //Active Button
-        private void ActivateButton(Button btn)
-        {
-            Button currentButton;
-            currentButton = btn;
-            if (currentButton != null)
-            {
-                currentButton.BackColor = Color.White;
-                currentButton.ForeColor = Color.Black;
-            }
-
-            btn.BackColor = Color.FromArgb(230, 245, 243);
-            btn.ForeColor = Color.Teal;
-        }
-
-        //Panel Search Paint
-
-
-        /*private void LoadTickets()
-        {
-            //AllTicketView.Items.Clear();
-
-            //DataTable table = DataAccess.GetTickets();
-
-            foreach (DataRow row in table.Rows)
-            {
-                var item = new ListViewItem(row["TicketId"].ToString());
-
-                item.SubItems.Add(row["Title"].ToString());
-                item.SubItems.Add(row["Status"].ToString());
-                item.SubItems.Add(row["Priority"].ToString());
-                //              item.SubItems.Add(row["Description"].ToString())
-                item.SubItems.Add(row["UserName"].ToString());
-                item.SubItems.Add(row["UserEmail"].ToString());
-
-                //AllTicketView.Items.Add(item);
-            }
-        }*/
-
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -146,26 +91,9 @@ namespace Ticketing_System
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //LoadTickets();
-            //En vez de correo sera fecha
             RoundButton(addTcktBtn, 30);
             RoundButton(logoutBtn, 30);
         }
-
-        /*private void AllTicketView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (AllTicketView.SelectedItems.Count > 0)
-            {
-                var selectedItem = AllTicketView.SelectedItems[0];
-
-                int ticketId = int.Parse(AllTicketView.SelectedItems[0].Text);
-                //string ticketId = selectedItem.SubItems[3].Text;
-
-                Form TicketDetail = new TicketDetailForm(ticketId);
-                TicketDetail.Show();
-
-            }
-        }*/
 
         private void addTcktBtn_MouseEnter(object sender, EventArgs e)
         {
@@ -202,8 +130,6 @@ namespace Ticketing_System
                panelSearch.ClientRectangle,
                currentBorderColor,
                ButtonBorderStyle.Solid);
-
-
         }
 
         private void refreshBtn_MouseLeave(object sender, EventArgs e)
@@ -265,6 +191,45 @@ namespace Ticketing_System
 
         }
 
-        
+        private void createUsersBtn_Click(object sender, EventArgs e)
+        {
+            CreateUserControl newUser = new CreateUserControl();
+            maincontainerPanel.Controls.Clear();
+            newUser.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(newUser);
+        }
+
+        private void srchTcktBtn_Click(object sender, EventArgs e)
+        {
+            /*if (int.TryParse(searchBox.Text,out int ticketId))
+            {
+                if (
+                    ticketDictionary.ContainsKey(ticketId)
+                )
+                {
+                    Ticket foundTicket =
+                        ticketDictionary[ticketId];
+
+                    List<Ticket> result =
+                        new List<Ticket>();
+
+                    result.Add(foundTicket);
+
+                    DisplayTickets(result);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Ticket no encontrado"
+                    );
+                }
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Ingresa un ID válido"
+                );
+            }*/
+        }
     }
 }
