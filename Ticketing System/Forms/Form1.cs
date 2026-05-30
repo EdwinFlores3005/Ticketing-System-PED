@@ -11,14 +11,16 @@ namespace Ticketing_System
 {
     public partial class MainMenu : Form
     {
+        private TicketViewControl currentTicketView;
         Color currentBorderColor = Color.Gray;
         public MainMenu()
         {
             InitializeComponent();
             DataAccess.InitializeDatabase();
             logoutBtn.Text = Session.name;
+            LoadDashboard();
 
-            switch (Session.confirmRole(Session.role))
+            switch (Session.confirmRole(Session.role)) //Funciones que solo los Admins pueden ver
             {
                 case Session.Role.Tecnico:
                     createUsersBtn.Visible = false;
@@ -37,7 +39,7 @@ namespace Ticketing_System
 
         }
 
-        //Round Corners
+        //Esquinas redondeadas
         private void RoundButton(Button btn, int radius)
         {
             GraphicsPath path = new GraphicsPath();
@@ -52,6 +54,15 @@ namespace Ticketing_System
             btn.Region = new Region(path);
         }
 
+        private void LoadDashboard()
+        {
+            maincontainerPanel.Controls.Clear();
+            DashboardControl dashboardControl = new DashboardControl();
+            dashboardControl.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(dashboardControl);
+        }
+
+        //Uso de tooltip al hacer hover sobre el menu
         private void showToolTip(Button button, string phrase)
         {
             ToolTip toolTip = new ToolTip();
@@ -63,11 +74,13 @@ namespace Ticketing_System
             toolTip.SetToolTip(button, phrase);
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-
+            RoundButton(addTcktBtn, 30);
+            RoundButton(logoutBtn, 30);
         }
 
+        //Agregar un nuevo ticket
         private void addTcktBtn_Click(object sender, EventArgs e)
         {
             Form NewTicket = new NewTicketForm();
@@ -79,22 +92,9 @@ namespace Ticketing_System
             }
             if (NewTicket.DialogResult == DialogResult.Cancel)
                 NewTicket.Close();
-
-            //ActivateButton(addTcktBtn);
         }
 
-        //Este se puede quedar asi, tiene que cambiar a allticketsview dentro del usercontrol
-        private void refreshBtn_Click(object sender, EventArgs e)
-        {
-            //LoadTickets();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            RoundButton(addTcktBtn, 30);
-            RoundButton(logoutBtn, 30);
-        }
-
+        //Efecto hover para el boton de 'Nuevo Ticket'
         private void addTcktBtn_MouseEnter(object sender, EventArgs e)
         {
             addTcktBtn.ForeColor = Color.White;
@@ -105,11 +105,101 @@ namespace Ticketing_System
             addTcktBtn.ForeColor = Color.FromArgb(40, 40, 40);
         }
 
-        private void searchBox_Click(object sender, EventArgs e)
+        //Mostrar opción de 'Cerrar Sesión' al hacer click 
+        private void button2_Click(object sender, EventArgs e)
         {
-
+            contextMenuStrip1.Show(logoutBtn, 0, logoutBtn.Height);
         }
 
+        private void logoutBtn_MouseEnter(object sender, EventArgs e)
+        {
+            logoutBtn.ForeColor = Color.White;
+        }
+
+        private void logoutBtn_MouseLeave(object sender, EventArgs e)
+        {
+            logoutBtn.ForeColor = Color.FromArgb(40, 40, 40);
+        }
+
+        //Cerrar sesión
+        private void cerrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Session.id = 0;
+            Session.name = "";
+            Session.email = "";
+            Session.role = "";
+            Application.Restart();
+        }
+
+        //Boton de Home. Primer pantalla al cargar el programa.
+        private void homeBtn_Click(object sender, EventArgs e)
+        {
+            LoadDashboard();
+        }
+
+        //Mostrar todos los tickets abiertos asignados al usuario
+        private void openticketsBtn_Click(object sender, EventArgs e)
+        {
+            currentTicketView = new TicketViewControl("mine");
+            maincontainerPanel.Controls.Clear();
+            currentTicketView.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(currentTicketView);
+        }
+
+        //Mostrar los tickets cerrados
+        private void closedicketsBtn_Click(object sender, EventArgs e)
+        {
+            currentTicketView = new TicketViewControl("closed");
+            maincontainerPanel.Controls.Clear();
+            currentTicketView.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(currentTicketView);
+        }
+
+        //Mostrar los tickets abiertos sin importar usuario
+        private void allticketsBtn_Click(object sender, EventArgs e)
+        {
+            currentTicketView = new TicketViewControl("all");
+            maincontainerPanel.Controls.Clear();
+            currentTicketView.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(currentTicketView);
+        }
+
+        //Cargar form para crear un nuevo usuario. Solo disponible para Admins
+        private void createUsersBtn_Click(object sender, EventArgs e)
+        {
+            CreateUserControl newUser = new CreateUserControl();
+            maincontainerPanel.Controls.Clear();
+            newUser.Dock = DockStyle.Fill;
+            maincontainerPanel.Controls.Add(newUser);
+        }
+
+        //Buscar tickets
+        private void srchTcktBtn_Click(object sender, EventArgs e)
+        {
+            if (currentTicketView != null)
+            {
+                currentTicketView.SearchTicket(searchBox.Text);
+            }
+        }
+
+        private void searchBox_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(searchBox.Text)
+   )
+            {
+                currentTicketView?.ResetSearch();
+            }
+        }
+
+        private void searchBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                srchTcktBtn_Click((object)sender, e);
+            }
+        }
+
+        //Decoración del botón de busqueda de ticket
         private void searchBox_Enter(object sender, EventArgs e)
         {
             panelSearch.Invalidate();
@@ -132,104 +222,6 @@ namespace Ticketing_System
                ButtonBorderStyle.Solid);
         }
 
-        private void refreshBtn_MouseLeave(object sender, EventArgs e)
-        {
-            this.Cursor = Cursors.Default;
-        }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            contextMenuStrip1.Show(logoutBtn, 0, logoutBtn.Height);
-        }
-
-        private void logoutBtn_MouseEnter(object sender, EventArgs e)
-        {
-            logoutBtn.ForeColor = Color.White;
-        }
-
-        private void logoutBtn_MouseLeave(object sender, EventArgs e)
-        {
-            logoutBtn.ForeColor = Color.FromArgb(40, 40, 40);
-        }
-
-
-        private void openticketsBtn_Click(object sender, EventArgs e)
-        {
-            TicketViewControl getAllTickets = new TicketViewControl("mine");
-            maincontainerPanel.Controls.Clear();
-            getAllTickets.Dock = DockStyle.Fill;
-            maincontainerPanel.Controls.Add(getAllTickets);
-        }
-
-        private void closedicketsBtn_Click(object sender, EventArgs e)
-        {
-            TicketViewControl getAllTickets = new TicketViewControl("closed");
-            maincontainerPanel.Controls.Clear();
-            getAllTickets.Dock = DockStyle.Fill;
-            maincontainerPanel.Controls.Add(getAllTickets);
-        }
-
-        private void cerrToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Session.id = 0;
-            Session.name = "";
-            Session.email = "";
-            Session.role = "";
-            Application.Restart();
-        }
-
-        private void allticketsBtn_Click(object sender, EventArgs e)
-        {
-            TicketViewControl getAllTickets = new TicketViewControl("all");
-            maincontainerPanel.Controls.Clear();
-            getAllTickets.Dock = DockStyle.Fill;
-            maincontainerPanel.Controls.Add(getAllTickets);
-        }
-
-        private void allticketsBtn_MouseHover(object sender, EventArgs e)
-        {
-
-        }
-
-        private void createUsersBtn_Click(object sender, EventArgs e)
-        {
-            CreateUserControl newUser = new CreateUserControl();
-            maincontainerPanel.Controls.Clear();
-            newUser.Dock = DockStyle.Fill;
-            maincontainerPanel.Controls.Add(newUser);
-        }
-
-        private void srchTcktBtn_Click(object sender, EventArgs e)
-        {
-            /*if (int.TryParse(searchBox.Text,out int ticketId))
-            {
-                if (
-                    ticketDictionary.ContainsKey(ticketId)
-                )
-                {
-                    Ticket foundTicket =
-                        ticketDictionary[ticketId];
-
-                    List<Ticket> result =
-                        new List<Ticket>();
-
-                    result.Add(foundTicket);
-
-                    DisplayTickets(result);
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Ticket no encontrado"
-                    );
-                }
-            }
-            else
-            {
-                MessageBox.Show(
-                    "Ingresa un ID válido"
-                );
-            }*/
-        }
     }
 }

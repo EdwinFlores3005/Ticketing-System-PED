@@ -106,10 +106,12 @@
             searchBox.ForeColor = Color.FromArgb(40, 40, 40);
             searchBox.Location = new Point(40, 8);
             searchBox.Name = "searchBox";
+            searchBox.PlaceholderText = "Ticket ID";
             searchBox.Size = new Size(312, 20);
             searchBox.TabIndex = 4;
-            searchBox.Click += searchBox_Click;
+            searchBox.TextChanged += searchBox_TextChanged;
             searchBox.Enter += searchBox_Enter;
+            searchBox.KeyDown += searchBox_KeyDown;
             searchBox.Leave += searchBox_Leave;
             // 
             // menuPanel
@@ -160,6 +162,7 @@
             homeBtn.Size = new Size(72, 78);
             homeBtn.TabIndex = 8;
             homeBtn.UseVisualStyleBackColor = true;
+            homeBtn.Click += homeBtn_Click;
             // 
             // openticketsBtn
             // 
@@ -211,7 +214,6 @@
             allticketsBtn.TabIndex = 11;
             allticketsBtn.UseVisualStyleBackColor = true;
             allticketsBtn.Click += allticketsBtn_Click;
-            allticketsBtn.MouseHover += allticketsBtn_MouseHover;
             // 
             // createUsersBtn
             // 

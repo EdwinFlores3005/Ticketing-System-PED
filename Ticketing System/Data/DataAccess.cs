@@ -14,6 +14,7 @@ namespace Ticketing_System.Data
 {
     public static class DataAccess
     {
+        //Crear tablas para la base de datos usando SQLITE. Todo se trabajo en SQLITE
         public static void InitializeDatabase()
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -69,6 +70,7 @@ namespace Ticketing_System.Data
             }
         }
 
+        //Agregar ticket a la base de datos 
         public static void AddTicket(string title, string description, string email, int priority, string status)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -123,6 +125,7 @@ namespace Ticketing_System.Data
             }
         }
 
+        //Al momento de crear un ticket, si el usuario que lo crea no existe, se crea un usuario. Si el usuario ya existe, se le asigna en la base de datos
         public static int GetOrCreateUser(string email)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -169,7 +172,7 @@ namespace Ticketing_System.Data
 
 
 
-        //Retornar todos los tickets
+        //Retornar todos los tickets. Se le pasa un string where que definira de donde vendran
         public static List<Ticket> GetTickets(string where)
         {
             List<Ticket> list = new List<Ticket>();
@@ -232,26 +235,6 @@ namespace Ticketing_System.Data
             return list;
         }
 
-        /*public static int Login(TextBox username, TextBox password)
-        {
-            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
-            {
-                db.Open();
-
-                string query = "SELECT COUNT(*) FROM Users WHERE Email = @user AND Password = @pass";
-
-                using var command = new SqliteCommand(query, db);
-                command.Parameters.AddWithValue("@user", username.Text);
-                command.Parameters.AddWithValue("@pass", password.Text);
-
-                int result = Convert.ToInt32(command.ExecuteScalar());
-                return result;
-
-            }
-        }*/
-
-
-
         public static bool  Login(string username, string password)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -283,7 +266,7 @@ namespace Ticketing_System.Data
             }
         }
 
-        
+        //Selecciona un solo ticket para mostrar sus datos
         public static Ticket GetSelectedTicket(int ticketId)
         {
             Ticket ticket = null;
@@ -343,8 +326,8 @@ namespace Ticketing_System.Data
                 return ticket;
         }
 
+        //Actualizar ticket
         public static void UpdateTicket(int ticketId, string status, int priority, int assignedToUserId)
-        //Aqui se puede agregar para modificar el agente a futuro
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
             {
@@ -368,6 +351,7 @@ namespace Ticketing_System.Data
             }
         }
 
+        //Agregar notas extra al ticket
         public static void AddHistory(int ticketId, string change, int updatedById)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -391,6 +375,7 @@ namespace Ticketing_System.Data
             }
         }
 
+        //Obtener la lista de todos las notas agregadas a un ticket existente
         public static List<TicketHistory> GetTicketHistory(int ticketId)
         {
             List<TicketHistory> historyList = new List<TicketHistory>();
@@ -436,6 +421,7 @@ namespace Ticketing_System.Data
             return historyList;
         }
 
+        //Convertir la lista del historial de notas a una cola
         public static Queue<TicketHistory> GetTicketHistoryQueue(int ticketId)
         {
             List<TicketHistory> historyList = GetTicketHistory(ticketId);
@@ -450,6 +436,7 @@ namespace Ticketing_System.Data
             return historyQueue;
         }
 
+        //Agregar usuario desde la vista de Admin
         public static void AddUser(string name, string email, string password, string role)
         {
             using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
@@ -484,6 +471,7 @@ namespace Ticketing_System.Data
             }
         }
 
+        //Obtener agentes para pasarlos por un ComboBox y reasignar un ticket
         public static List<UserClass> GetAgents()
         {
             List<UserClass> agents = new List<UserClass>();
@@ -516,6 +504,139 @@ namespace Ticketing_System.Data
 
             return agents;
         }
+
+        //Obtener cantidad de tickets para el dashboard
+        public static int CountAllOpenTickets() //Retorna cantidad de ticket abiertos
+       {
+           using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+           {
+               db.Open();
+
+               string query = "SELECT COUNT(*) FROM Tickets WHERE Status != 'Closed'";
+
+               using var command = new SqliteCommand(query, db);
+
+               int result = Convert.ToInt32(command.ExecuteScalar());
+               return result;
+
+           }
+       }
+
+        public static int CountAllCriticalTickets() //Retorna cantidad de ticket abiertos de estado critico
+        {
+            
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = "SELECT COUNT(*) FROM Tickets WHERE Priority = 1 AND Status != 'Closed'";
+
+                using var command = new SqliteCommand(query, db);
+
+                int result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+
+            }
+        }
+
+        public static int CountAllAssignedTickets() //Retorna cantidad de ticket abiertos asignados al usuario
+        {
+            
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = "SELECT COUNT(*) FROM Tickets WHERE AssignedToUserId = @userId AND Status != 'Closed'";
+
+                using var command = new SqliteCommand(query, db);
+                command.Parameters.AddWithValue("@userId", Session.id);
+
+                int result = Convert.ToInt32(command.ExecuteScalar());
+                return result;
+
+            }
+        }
+
+        //Mostrar los ultimos 3 tickets creados que esten abiertos
+        public static List<Ticket> GetRecentTickets()
+        {
+            List<Ticket> tickets = new List<Ticket>();
+
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                SELECT
+                    T.Id,
+                    T.Title,
+                    T.CreatedAt
+                FROM Tickets T
+                WHERE T.Status != 'Closed'
+                ORDER BY T.CreatedAt DESC
+                LIMIT 3";
+
+                using var cmd = new SqliteCommand(query, db);
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Ticket ticket = new Ticket();
+
+                    ticket.Id = Convert.ToInt32(reader["Id"]);
+                    ticket.Title = reader["Title"].ToString();
+                    ticket.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+
+                    tickets.Add(ticket);
+                }
+            }
+
+            return tickets;
+        }
+
+        //Mostrar los ultimos 3 tickets creados que esten abiertos asignados al usuario que inicio sesion
+        public static List<Ticket> GetRecentAssignedTickets()
+        {
+            List<Ticket> tickets = new List<Ticket>();
+
+            using (var db = new SqliteConnection("Data Source=TicketSystem.db"))
+            {
+                db.Open();
+
+                string query = @"
+                SELECT
+                    T.Id,
+                    T.Title,
+                    T.Status,
+                    T.CreatedAt
+                FROM Tickets T
+                WHERE T.AssignedToUserId = @userId
+                    AND T.Status != 'Closed'
+                ORDER BY T.CreatedAt DESC
+                LIMIT 3";
+
+
+                using var cmd = new SqliteCommand(query, db);
+                cmd.Parameters.AddWithValue("@userId", Session.id);
+                using var reader = cmd.ExecuteReader();
+
+
+                while (reader.Read())
+                {
+                    Ticket ticket = new Ticket();
+
+                    ticket.Id = Convert.ToInt32(reader["Id"]);
+                    ticket.Title = reader["Title"].ToString();
+                    ticket.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+
+                    tickets.Add(ticket);
+                }
+            }
+
+            return tickets;
+        }
+
+
     }
 
 }

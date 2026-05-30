@@ -21,6 +21,7 @@ namespace Ticketing_System
 
             private void createBtn_Click(object sender, EventArgs e)
         {
+            //Obtener datos para crear el ticket
             string email = emailTxtBox.Text.Trim();
 
             string title = titleTxtBox.Text.Trim();
@@ -77,6 +78,7 @@ namespace Ticketing_System
 
             int priority = prioBox.SelectedIndex + 1;
 
+            //Agregar el ticket a la base de datos
             DataAccess.AddTicket(
                 title,
                 description,

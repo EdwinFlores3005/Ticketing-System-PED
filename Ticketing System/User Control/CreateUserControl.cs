@@ -18,6 +18,8 @@ namespace Ticketing_System.User_Control
                 InitializeComponent();
             }
 
+            //Al crear usuario, se confirma que ningun campo este vacio y que las entradas sean validas
+            //Se agrega el usuario a la DB, y se resetea el form
             private void createUserBtn_Click(object sender,EventArgs e)
             {
                 string name = nameTxtBox.Text.Trim();

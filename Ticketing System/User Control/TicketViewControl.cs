@@ -7,6 +7,7 @@ using Ticketing_System.Models;
 
 namespace Ticketing_System.User_Control
 {
+    //En este User Control se muestran todos los tickets por medio de listviews
     public partial class TicketViewControl : UserControl
     {
         private string currentTicketType;
@@ -33,6 +34,7 @@ namespace Ticketing_System.User_Control
 
         private void SetupColumns()
         {
+            //Las columnas del ListView se crean
             allticketsView.Columns.Clear();
             allticketsView.Columns.Add("ID", 88, HorizontalAlignment.Center);
             allticketsView.Columns.Add("Título", 400);
@@ -44,43 +46,49 @@ namespace Ticketing_System.User_Control
             allticketsView.Columns.Add("Asignado A", 195, HorizontalAlignment.Left);
         }
 
+        //La funcion LoadTickets trae desde la base de datos (DataAccess) los tickets seleccionados
         private void LoadTickets()
         {
+            //Se traen todos los tickets sin importar el estado
             Alltickets = DataAccess.GetTickets("");
             ticketDictionary.Clear();
 
+            //Todos los tickets se agregan a un diccionario
             foreach (Ticket ticket in Alltickets)
             {
                 ticketDictionary[ticket.Id] = ticket;
             };
 
+            //Traer todos los tickets abiertos, dejando de lado los cerrados
             if (currentTicketType == "all")
             {
                 tickettypelabel.Text = "Todos los tickets";
                 tickets = DataAccess.GetTickets("WHERE T.Status != 'Closed'");
 
             }
+            //Tickets asignados al usuario
             else if (currentTicketType == "mine")
             {
                 tickettypelabel.Text = "Mis tickets";
                 tickets = DataAccess.GetTickets("WHERE T.AssignedToUserId = @userId AND T.Status != 'Closed'");
             }
+            //Tickets cerrados
             else if (currentTicketType == "closed")
             {
                 tickettypelabel.Text = "Tickets cerrados";
-                //tickets = DataAccess.GetTickets("WHERE T.Status = 'Closed'");
             }
 
             allTicketsNumber.Text = tickets.Count + " tickets";
             DisplayTickets(tickets);
         }
 
+        //Funcion para mostrar la lista de tickets obtenida
         private void DisplayTickets(List<Ticket> tickets)
         {
             allticketsView.BeginUpdate();
             allticketsView.Items.Clear();
 
-
+            //Por cada ticket se agrega un item al ListView
             foreach (Ticket ticket in tickets)
             {
                 ListViewItem item = new ListViewItem(ticket.Id.ToString());
@@ -104,7 +112,7 @@ namespace Ticketing_System.User_Control
                 }
 
                 string status = ticket.Status.ToLower();
-
+                //Mostrar un color distinto en la columna dependiendo del estado del ticket
                 if (status == "new")
                 {
                     item.SubItems[2].ForeColor =
@@ -132,8 +140,49 @@ namespace Ticketing_System.User_Control
                 }
 
                 allticketsView.Items.Add(item);
-                allticketsView.EndUpdate();
+                
             }
+            allticketsView.EndUpdate();
+        }
+
+        //Buscar tickets en el diccionario a traves del Search Bar con su ticket ID
+        public void SearchTicket(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                DisplayTickets(tickets);
+                return;
+            }
+
+            if (int.TryParse(searchText, out int ticketId))
+            {
+                if (ticketDictionary.ContainsKey(ticketId))
+                {
+                    //Si el ticket es encontrado en el diccionario se muestra en el ListView actual y el ticket es abierto
+                    Ticket foundTicket = ticketDictionary[ticketId];
+
+                    DisplayTickets(new List<Ticket>()
+                        {
+                    foundTicket
+                        }
+                    );
+                    TicketDetailForm form = new TicketDetailForm(foundTicket);
+                    form.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Ticket no encontrado");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ingrese un ID válido");
+            }
+        }
+
+        public void ResetSearch()
+        {
+            DisplayTickets(tickets);
         }
 
         private string GetPriorityText(int priority)
@@ -155,6 +204,8 @@ namespace Ticketing_System.User_Control
 
         private void SortOptions()
         {
+            //Al momento de estar en el boton de tickets cerrados, aqui se muestran dos opciones para filtrar.
+            //Se pueden mostrar todos los tickets cerrados, o los cerrados asignados al agente
             if (currentTicketType == "closed")
             {
                 sortbyBox.Items.Clear();
@@ -165,6 +216,7 @@ namespace Ticketing_System.User_Control
 
         private async void ShowStatus(string message)
         {
+            //Al momento de abrir un ticket, se muestra una notificacion si hubo o no modificaciones
             statusLbl.Text = message;
             statuschangestrip.Visible = true;
             statuschangestrip.BackColor = Color.White;
@@ -179,7 +231,10 @@ namespace Ticketing_System.User_Control
         private void sortbyBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (currentTicketType == "closed")
-            {
+            {      
+                //Se pueden mostrar todos los tickets cerrados, o los cerrados asignados al agente
+                //Esto solo pasa al estar en la vista de tickets cerrados
+
                 switch (sortbyBox.SelectedIndex)
                 {
                     case 0:
@@ -197,6 +252,7 @@ namespace Ticketing_System.User_Control
             }
             else
             {
+                //Filtros para ordenar tickets
                 switch (sortbyBox.SelectedIndex)
                 {
 
@@ -245,6 +301,8 @@ namespace Ticketing_System.User_Control
 
         private void allticketsView_ItemActivate(object sender, EventArgs e)
         {
+            //AL hacer doble click, se abre una nueva pestaña con la informacion del ticket
+            //Esto permite poder actualizar la informacion del ticket
             ListViewItem activatedItem = allticketsView.SelectedItems[0];
             if (activatedItem != null)
             {

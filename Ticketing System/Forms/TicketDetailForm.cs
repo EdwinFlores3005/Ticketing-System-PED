@@ -19,8 +19,10 @@ namespace Ticketing_System
         public TicketDetailForm(Ticket ticket)
         {
             InitializeComponent();
+            //Se guarda el ticket seleccionado
             currentTicket = ticket;
 
+            //Los tickets cerrados son readonly
             if(currentTicket.Status == "Closed")
             {
                 notesTxt.Visible = false;
@@ -29,9 +31,11 @@ namespace Ticketing_System
                 prioBox.Enabled = false;
             }
 
+            //Admins pueden cambiar el agente asignado al ticket
             assignAgentBox.Visible = Session.role == "Admin";
             assignAgentLbl.Visible = Session.role == "Admin";
 
+            //Pasar los datos del ticket seleccionado al form
             ticketIdTxt.Text = ticket.Id.ToString();
             usernameTxt.Text = ticket.UserName.ToString();
             emailTxt.Text = ticket.UserEmail.ToString();
@@ -76,6 +80,7 @@ namespace Ticketing_System
         {
             historyFlowPanel.Controls.Clear();
 
+            //La cola de cambios hechos o notas guardadas en el ticket se llama y se muestran en un Panel
             Queue<TicketHistory> historyQueue = DataAccess.GetTicketHistoryQueue(currentTicket.Id);
 
             foreach (TicketHistory history in historyQueue)
@@ -108,6 +113,7 @@ namespace Ticketing_System
             }
         }
 
+        //Trar lista de agentes para reasignar ticket
         private void LoadAgents()
         {
             List<UserClass> agents = DataAccess.GetAgents();
@@ -121,21 +127,25 @@ namespace Ticketing_System
             assignAgentBox.SelectedValue = currentTicket.AssignedToUserId;
         }
 
+        //Actualizar informacion del ticket
         private void Actualizar_Click(object sender, EventArgs e)
         {
             bool changed = currentTicket.Status != stateBox.Text || currentTicket.Priority != prioBox.SelectedIndex + 1 || currentTicket.AssignedToUserId != Convert.ToInt32(assignAgentBox.SelectedValue);
             bool noteAdded = !string.IsNullOrWhiteSpace(notesTxt.Text);
 
+            //Guardar nota automatica al cambiar de estado
             if (currentTicket.Status != stateBox.Text)
             {
                 DataAccess.AddHistory(currentTicket.Id, $"El estado se actualizo de {currentTicket.Status} a {stateBox.Text}", Session.id);
             }
 
+            //Guardar nota automatica al cambiar de proridad
             if (currentTicket.Priority != prioBox.SelectedIndex + 1)
             {
                 DataAccess.AddHistory(currentTicket.Id,$"La prioridad cambió de {GetPriorityText(currentTicket.Priority)} a {GetPriorityText(prioBox.SelectedIndex + 1)}", Session.id);
             }
 
+            //Guardar nota automatica al cambiar de agente
             if (currentTicket.AssignedToUserId != Convert.ToInt32(assignAgentBox.SelectedValue))
             {
                 DataAccess.AddHistory(
@@ -145,12 +155,13 @@ namespace Ticketing_System
                 );
             }
 
+            //Si una nota manual fue agregada, se guarda en la base de datos
             if (noteAdded)
             {
                 DataAccess.AddHistory(currentTicket.Id, notesTxt.Text,Session.id);
             }
 
-
+            //Si hubo cambios en el estado, la prioridad, o el agente, se guarda una nota en la base de datos
             if (changed)
             {
                 DataAccess.UpdateTicket(

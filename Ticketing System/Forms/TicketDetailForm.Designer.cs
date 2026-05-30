@@ -385,6 +385,7 @@
             Controls.Add(tableLayoutPanel1);
             Controls.Add(sideLayoutPanel);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "TicketDetailForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Ticket";

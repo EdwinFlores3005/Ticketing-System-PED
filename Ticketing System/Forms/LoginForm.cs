@@ -18,18 +18,9 @@ namespace Ticketing_System.Forms
             InitializeComponent();
         }
 
+        //Buscar credenciales en la base de datos. Si el usuario existe, se puede iniciar sesión
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            /*int result = DataAccess.Login(emailTxt, passwordTxt);
-
-            if(result == 1) {
-                this.DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                MessageBox.Show("Email o contraseña incorrecto.");
-            }*/
-
             bool result = DataAccess.Login(emailTxt.Text, passwordTxt.Text);
             if (result == true)
             {
@@ -50,6 +41,7 @@ namespace Ticketing_System.Forms
 
         }
 
+        //Mostrar contraseña
         private void checkbox1_CheckedChanged(object sender, EventArgs e)
         {
             passwordTxt.UseSystemPasswordChar = !showPassword.Checked;

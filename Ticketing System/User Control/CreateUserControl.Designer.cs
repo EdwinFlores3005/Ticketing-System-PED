@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             newTicketPanel = new TableLayoutPanel();
+            RoleBox = new ComboBox();
             label3 = new Label();
             label2 = new Label();
             newUserLbl = new Label();
@@ -37,7 +38,6 @@
             label1 = new Label();
             emailTxtBox = new TextBox();
             passwordTxtBox = new TextBox();
-            RoleBox = new ComboBox();
             createUserBtn = new Button();
             newTicketPanel.SuspendLayout();
             SuspendLayout();
@@ -76,6 +76,19 @@
             newTicketPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             newTicketPanel.Size = new Size(1080, 312);
             newTicketPanel.TabIndex = 12;
+            // 
+            // RoleBox
+            // 
+            RoleBox.Dock = DockStyle.Left;
+            RoleBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            RoleBox.FlatStyle = FlatStyle.Flat;
+            RoleBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            RoleBox.FormattingEnabled = true;
+            RoleBox.Items.AddRange(new object[] { "Cliente", "Tecnico", "Admin" });
+            RoleBox.Location = new Point(40, 260);
+            RoleBox.Name = "RoleBox";
+            RoleBox.Size = new Size(136, 31);
+            RoleBox.TabIndex = 4;
             // 
             // label3
             // 
@@ -168,19 +181,6 @@
             passwordTxtBox.Size = new Size(999, 28);
             passwordTxtBox.TabIndex = 15;
             // 
-            // statusBox
-            // 
-            RoleBox.Dock = DockStyle.Left;
-            RoleBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            RoleBox.FlatStyle = FlatStyle.Flat;
-            RoleBox.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            RoleBox.FormattingEnabled = true;
-            RoleBox.Items.AddRange(new object[] { "Cliente", "Tecnico", "Admin" });
-            RoleBox.Location = new Point(40, 260);
-            RoleBox.Name = "statusBox";
-            RoleBox.Size = new Size(136, 31);
-            RoleBox.TabIndex = 4;
-            // 
             // createUserBtn
             // 
             createUserBtn.AutoSize = true;
@@ -197,7 +197,7 @@
             createUserBtn.TabIndex = 13;
             createUserBtn.Text = "CREAR USUARIO";
             createUserBtn.UseVisualStyleBackColor = false;
-            createUserBtn.Click += this.createUserBtn_Click;
+            createUserBtn.Click += createUserBtn_Click;
             // 
             // CreateUserControl
             // 
