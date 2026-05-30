@@ -66,9 +66,42 @@ namespace Ticketing_System.Data
 
                 var createHistory = new SqliteCommand(historyTable, db);
                 createHistory.ExecuteNonQuery();
-                db.Close();
+
+                string checkAdmin = @"
+                SELECT COUNT(*)
+                FROM Users
+                WHERE Email = 'admin@admin.com'";
+
+                using var checkCmd = new SqliteCommand(checkAdmin, db);
+
+                int adminExists = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                if (adminExists == 0)
+                {
+                    string insertAdmin = @"
+                    INSERT INTO Users
+                    (
+                        Name,
+                        Email,
+                        Password,
+                        Role
+                    )
+                    VALUES
+                    (
+                        'Admin',
+                        'admin@admin.com',
+                        'admin',
+                        'Admin'
+                    );";
+
+                    using var insertCmd = new SqliteCommand(insertAdmin, db);
+
+                    insertCmd.ExecuteNonQuery();
+                }
             }
         }
+
+
 
         //Agregar ticket a la base de datos 
         public static void AddTicket(string title, string description, string email, int priority, string status)
